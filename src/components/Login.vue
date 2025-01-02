@@ -182,12 +182,11 @@ const showToast = () => {
 const handleLogin = async () => {
   isLoadVisible.value = true
   const result = await authStore.login(credentials.value);
-  console.log("RESULTADO", result)
       if (result.code == 1) {
         setTimeout(() => {
           message.value='Acesso Permitido!! Bem-Vido/a  (^_-).'
           isLoadVisible.value = false
-          router.push('/dashboard')
+          router.push('/')
           showToast()
         }, 1000);
       }else if (result.code == 2) {

@@ -194,7 +194,7 @@ isLoadVisible.value = true
     localStorage.removeItem("USER_SESSION");
     localStorage.removeItem("DO_USER_SESSION");
     localStorage.removeItem("routeName");
-    router.push("/");
+    router.push("/auth");
   }, 1000);
 };
 
@@ -207,12 +207,14 @@ const returnRouteName = computed(() => {
 })
 
 const islogado=()=>{
+    console.log("CHEGOU1")
   if (
     userLogado.value == null ||
     userLogado.value == "" ||
     userLogado.value.length == 0
   ) {
-    router.push('/')
+    console.log("CHEGOU2")
+    router.push('/auth')
   }
 }
 

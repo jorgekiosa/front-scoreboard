@@ -89,7 +89,6 @@ export default {
           .post("/login", payload)
           .then(({ data, status }) => {
             if (data.status == 1 || data.status == '1') {
-              console.log("DATAAAAAAAAAA",data.data)
 /*               if (!data.data.initialStatus) {
                 this.setContext(data);
 
