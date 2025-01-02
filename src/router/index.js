@@ -29,11 +29,11 @@ const router = createRouter({
       ],
     },
     {
-      path: '/broadcast',
+      path: '/scoreboard',
       component: ScoreBoardLayout,
       children: [
         {
-          path: '',
+          path: '/broadcast',
           name: 'broadcast',
           component: Broadcast ,
         },
