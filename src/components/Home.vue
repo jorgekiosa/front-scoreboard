@@ -193,7 +193,7 @@
 
 
 // Conexão com o servidor WebSocket em outro projeto
-const socket = io('http://localhost:3007'); // URL do servidor backend
+const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL); // URL do servidor backend
 
 const route = useRoute();
 
@@ -717,6 +717,7 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule, timer,player1Scor
 });
    // Restaura o timer ao recarregar a página
   onMounted(() => {
+    console.log("import.meta.env.VITE_WEBSOCKT_BASE_URL",import.meta.env.VITE_WEBSOCKT_BASE_URL)
     socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
     socket.on('currentTimer', (data) => {
