@@ -53,7 +53,7 @@
   const router = useRouter();
   const route = useRoute();
 
-  const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL,{query: { code:route.query.code || '' }});
+  const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' }});
   
   // Definição de dados de exemplo para os times
   const timer = ref(0);
@@ -131,6 +131,7 @@ socket.on('timerUpdated', (data) => {
 
 // Solicita o timer ao carregar a página
 onMounted(() => {
+  console.log("route.query.code",route.query.code)
   console.log("import.meta.env.VITE_WEBSOCKT_BASE_URL",import.meta.env.VITE_WEBSOCKT_BASE_URL)
   socket.emit('getGame', { code: route.query.code || '' });
   socket.emit('getTimer', { code: route.query.code || '' });

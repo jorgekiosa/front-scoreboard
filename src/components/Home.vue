@@ -193,7 +193,7 @@
 
 
 // Conexão com o servidor WebSocket em outro projeto
-const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL); // URL do servidor backend
+const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007'); // URL do servidor backend
 
 const route = useRoute();
 
