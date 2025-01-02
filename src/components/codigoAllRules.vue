@@ -99,7 +99,6 @@ const setPlayer2 = ref({
   set3: null
 });
 
-
 // Tipo de set (normal ou pontos corridos)
 const setType = ref('normal'); // "normal" é o tipo de set padrão
 
@@ -172,37 +171,6 @@ function incrementPlayer2() {
     player2Score.value = nextScore(player2Score.value);
   }
 }
-
-function decrementPlayer1() {
-  if (player1Score.value === 0) return; // Evita pontuação negativa
-  if (player1Score.value === 15) {
-    player1Score.value = 0;
-  } else if (player1Score.value === 30) {
-    player1Score.value = 15;
-  } else if (player1Score.value === 40) {
-    player1Score.value = 30;
-  } else if (player1Score.value === 40 && player2Score.value === 40 && deuceRule.value === 'advantage') {
-    // Remove a vantagem do Jogador 1 no caso de Deuce com regra de vantagem
-    player1Score.value = 40;
-    player2Score.value = 40;
-  }
-}
-
-function decrementPlayer2() {
-  if (player2Score.value === 0) return; // Evita pontuação negativa
-  if (player2Score.value === 15) {
-    player2Score.value = 0;
-  } else if (player2Score.value === 30) {
-    player2Score.value = 15;
-  } else if (player2Score.value === 40) {
-    player2Score.value = 30;
-  } else if (player2Score.value === 40 && player1Score.value === 40 && deuceRule.value === 'advantage') {
-    // Remove a vantagem do Jogador 2 no caso de Deuce com regra de vantagem
-    player2Score.value = 40;
-    player1Score.value = 40;
-  }
-}
-
 
 // Função que aplica a regra do Deuce (Vantagem ou Ponto de Ouro)
 function applyDeuceRule(winner) {

@@ -1,45 +1,26 @@
 <template>
     <div class="container text-center  px-5 mt-5">
       <div class="row justify-content-center text-white mb-4 g-4">
-        <div class="d-flex justify-content-around">
-      <!-- Incrementar pontos -->
-      <button class="btn btn-primary" @click="scorePoint(1, 'increment')" :disabled="isGameOver">
-        + Ponto para {{ player1Name }}
-      </button>
-      <button class="btn btn-danger" @click="scorePoint(2, 'increment')" :disabled="isGameOver">
-        + Ponto para {{ player2Name }}
-      </button>
-    </div>
-    <p>Games: <span class="fw-bold">{{ player2Games }}</span></p>
         <!-- Jogador 1 -->
-        <div class="col-3 border-custom shadow p-5">
+      <div class="col-3 border-custom shadow p-5">
+          <p>Games: <span class="fw-bold">{{ player1Games }}</span></p>
           <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 1" />
-          <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1('set1')">-</button>
-            <span class="fs-3">{{ setPlayer1.set1 }}</span>
-            <button class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1('set1')">+</button>
-          </div>
-          <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1('set2')">-</button>
-            <span class="fs-3">{{ setPlayer1.set2 }}</span>
-            <button class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1('set2')">+</button>
-          </div>
-          <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1('set3')">-</button>
-            <span class="fs-3">{{ setPlayer1.set3 }}</span>
-            <button class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1('set3')">+</button>
+          <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer1" :key="set" v-if="value!==null">
+            <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1(set)">-</button>
+            <span v-if="value!==null" class="fs-3">{{ value }}</span>
+            <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1(set)">+</button>
           </div>
           <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-primary rounded-circle" @click="decrementScore('player1')">-</button>
-            <span class="fs-3">{{ scores.player1 }}</span>
-            <button class="btn btn-primary rounded-circle" @click="incrementScore('player1')">+</button>
+            <button :class="displayPoints(scores.player1) === 'Vantagem'? 'btn btn-success rounded-circle': displayPoints(scores.player1)==40&&displayPoints(scores.player2)==40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="scorePoint(1, 'decrement')">-</button>
+            <span class="fs-3">{{ displayPoints(scores.player1) }}</span>
+            <button :class="displayPoints(scores.player1) === 'Vantagem'? 'btn btn-success rounded-circle': displayPoints(scores.player1)==40&&displayPoints(scores.player2)==40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="scorePoint(1, 'increment')" :disabled="isGameOver">+</button>
           </div>
-        </div>
+      </div>
   
         <!-- Timer -->
         <div class="col-4 px-5">
             <div class="row">
-                <div class="col-12 border-custom  d-flex justify-content-center align-items-center mb-2">
+                <div v-if="false" class="col-12 border-custom  d-flex justify-content-center align-items-center mb-2">
                     <!-- Caixa principal com borda -->
                     <div class="d-flex justify-content-center align-items-center px-4 py-2">
                     <!-- Botão de decremento -->
@@ -50,7 +31,7 @@
                     <button class="btn btn-primary rounded-circle btn-custom ms-3" @click="increment">+</button>
                     </div>
                 </div>
-                <div class="col-12 border-custom p-3 d-flex justify-content-center align-items-center">
+                <div class="col-12 border-custom p-3 mb-3 d-flex justify-content-center align-items-center">
                  <!-- Botões Laterais: Minutos -->
                     <div class="d-flex flex-column align-items-center me-3">
                         <button class="btn btn-success mb-2 rounded-circle" @click="incrementMinutes">+</button>
@@ -68,7 +49,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="d-flex justify-content-center mt-2">
+                    <div class="d-flex justify-content-center">
                         <button
                             class="btn btn-lg w-100"
                             :class="isRunning ? 'btn-danger' : 'btn-success'"
@@ -77,37 +58,28 @@
                             {{ isRunning ? 'Stop' : 'Start' }}
                         </button>
                     </div>
+                    <div v-if="isGameOver" class="text-center mt-3">
+                      <h3 class="text-success">Jogo Finalizado! 🎾</h3>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Jogador 2 -->
         <div class="col-3 border-custom shadow p-4">
+          <p>Games: <span class="fw-bold">{{ player2Games }}</span></p>
           <input v-model="player2" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 2" />
-          <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2('set1')">-</button>
-            <span class="fs-3">{{ setPlayer2.set1 }}</span>
-            <button class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2('set1')">+</button>
+          <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer2" :key="set" v-if="value!==null">
+            <button v-if="value!==null"  class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2(set)">-</button>
+            <span v-if="value!==null" class="fs-3">{{ value }}</span>
+            <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2(set)">+</button>
           </div>
           <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2('set2')">-</button>
-            <span class="fs-3">{{ setPlayer2.set2 }}</span>
-            <button class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2('set2')">+</button>
-          </div>
-          <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2('set3')">-</button>
-            <span class="fs-3">{{ setPlayer2.set3 }}</span>
-            <button class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2('set3')">+</button>
-          </div>
-          <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button class="btn btn-primary rounded-circle" @click="decrementScore('player2')">-</button>
-            <span class="fs-3">{{ scores.player2 }}</span>
-            <button class="btn btn-primary rounded-circle" @click="incrementScore('player2')">+</button>
+            <button :class="displayPoints(scores.player2) === 'Vantagem'? 'btn btn-success rounded-circle': displayPoints(scores.player1)==40&&displayPoints(scores.player2)==40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="scorePoint(2, 'decrement')">-</button>
+            <span class="fs-3">{{ displayPoints(scores.player2) }}</span>
+            <button :class="displayPoints(scores.player2) === 'Vantagem'? 'btn btn-success rounded-circle': displayPoints(scores.player1)==40&&displayPoints(scores.player2)==40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="scorePoint(2, 'increment')" :disabled="isGameOver">+</button>
           </div>
         </div>
-        <button class="btn btn-outline-warning" @click="startStreaming">
-                            <i class="bi bi-people"></i> Stream
-                        </button>
         <div class="col-12">
             <div class="accordion" id="accordionExample">
             <div class="accordion-item bg-transparent border-custom">
@@ -118,19 +90,68 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <strong>This is the first item's accordion body.</strong>
                     <div class="d-flex mb-4 gap-2 flex-wrap justify-content-center">
-                        <button class="btn btn-primary" @click="resetTime">Reset time</button>
-                        <button class="btn btn-outline-primary" @click="resetAll">Reset all</button>
-                        <button class="btn btn-outline-primary">Swap teams</button>
-                        <button class="btn btn-outline-warning" @click="startStreaming">
+                      <div>
+                        <input 
+                          type="checkbox" 
+                          class="btn-check" 
+                          id="btn-check-2" 
+                          v-model="hideBoard" 
+                          autocomplete="off"
+                        >
+                        <label class="btn" :class="hideBoard ? 'btn-success' : 'btn-danger'" for="btn-check-2">Hide board</label>
+                      </div>
+                        <button class="btn btn-warning" @click="resetTime">Reset time</button>
+                        <button class="btn btn-primary" @click="resetAll">Reset all</button>
+                        <!-- <button class="btn btn-outline-primary">Swap teams</button> -->
+                        <button class="btn btn-warning" @click="startStreaming">
                             <i class="bi bi-people"></i> Stream
                         </button>
                     </div>
+                    <hr class="border border-white border-1 opacity-50">
+                    <div class="col-12 text-white ">
+                      <div class="row g-4">
+                        <div class="col-6 border-custom shadow p-4 mb-4">
 
+                        </div>
+                        <div class="col-6 border-custom shadow p-4 mb-4">
+                          <pre>{{ deuceRules }}</pre>
+                          <p class="fs-4 fw-bolder">Regras dos 40 - 40  </p>
+                          <div class="row g-3 px-5 align-items-center">
+                            <div class="col">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input cursor-pointer" type="radio"  id="gridRadios1" v-model="deuceRules" value="goldenPoint" >
+                                <label class="form-check-label" for="gridRadios1">
+                                  Ponto de Outro
+                                </label>
+                            </div>
+                            </div>
+                            <div class="col">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="gridRadios1" v-model="deuceRules" value="advantageRules">
+                                <label class="form-check-label" for="gridRadios2">
+                                  Vantagens
+                                </label>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    
                     <div class="row">
                       <div class="col-12">
-                        <input v-model="sponsor" class="form-control mb-3 text-left text-white border-input" placeholder="Patrocinador" />
+                        <div class="form-check form-switch form-check-inline">
+                          <input class="form-check-input" style="transform: scale(1.2);" v-model="hideBoard" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                          <label class="form-check-label text-white" for="flexSwitchCheckDefault">Hide board</label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col">
+                        <input v-model="sponsor" class="form-control placeholder-white mb-3 text-left text-white border-input" placeholder="Patrocinador" />
                       </div>
                     </div>
                 </div>
@@ -145,6 +166,7 @@
   </template>
   
   <script setup>
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   import { storeToRefs } from "pinia";
   import { ref, computed,onMounted,watch } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
@@ -159,29 +181,32 @@
   const router = useRouter();
   const route = useRoute();
 
-  // Variáveis de controle
-const player1Points = ref(0);
-const player2Points = ref(0);
+// Variáveis de controle
+
+const deuceRules = ref('goldenPoint')
+// Variáveis de controle
+
+const hideBoard=ref(true)
 
 const player1Games = ref(0);
 const player2Games = ref(0);
 // Estado do gameParts 
 const gameParts  = ref(1);
 
-  const sponsor = ref('');
-  // Estados para os jogadores
-  const player1 = ref('Home');
-  const setPlayer1=ref({
-    set1:0,
-    set2:0,
-    set3:0
-  })
+const sponsor = ref('');
+// Estados para os jogadores
+const player1 = ref('Home');
+const setPlayer1=ref({
+  set1:0,
+  set2:null,
+  set3:null
+})
 
   const player2 = ref('Away');
   const setPlayer2=ref({
     set1:0,
-    set2:0,
-    set3:0
+    set2:null,
+    set3:null
   })
   
   // Pontuações
@@ -208,29 +233,28 @@ function displayPoints(points) {
   return 'Vantagem';
 }
 
-  function scorePoint(player, action) {
-  //if (isGameOver.value) return; // Impede novas ações se o jogo acabou
+function scorePoint(player, action) {
+  if (isGameOver.value) return;
 
   if (action === 'increment') {
-    if (player === 1) player1Points.value++;
-    else if (player === 2) player2Points.value++;
+    if (player === 1) scores.value.player1++;
+    else if (player === 2) scores.value.player2++;
   } else if (action === 'decrement') {
-    if (player === 1 && player1Points.value > 0) player1Points.value--;
-    else if (player === 2 && player2Points.value > 0) player2Points.value--;
+    if (player === 1 && scores.value.player1 > 0) scores.value.player1--;
+    else if (player === 2 && scores.value.player2 > 0) scores.value.player2--;
   }
-
   checkGameWinner();
 }
 
 function checkGameWinner() {
   // Jogador 1 vence o game
-  if (player1Points.value >= 4 && player1Points.value - player2Points.value >= 2) {
+  if (scores.value.player1 >= 4 && scores.value.player1 - scores.value.player2 >= 2) {
     player1Games.value++;
     resetGame();
     checkSetWinner();
   }
   // Jogador 2 vence o game
-  else if (player2Points.value >= 4 && player2Points.value - player1Points.value >= 2) {
+  else if (scores.value.player2 >= 4 && scores.value.player2 - scores.value.player1 >= 2) {
     player2Games.value++;
     resetGame();
     checkSetWinner();
@@ -240,6 +264,7 @@ function checkGameWinner() {
 // Função para verificar vencedor do set
 function checkSetWinner() {
   const currentSet = getCurrentSet();
+console.log("currentSet", currentSet)
   if (player1Games.value >= 6 && player1Games.value - player2Games.value >= 2) {
     setPlayer1.value[currentSet] = player1Games.value;
     setPlayer2.value[currentSet] = player2Games.value;
@@ -250,7 +275,7 @@ function checkSetWinner() {
     resetSet();
   }
 
-  //checkGameOver();
+  checkGameOver();
 }
 
   // Funções de pontuação
@@ -277,7 +302,7 @@ function getCurrentSet() {
   const totalSetsPlayed =
     (setPlayer1.value.set1 > 0 || setPlayer2.value.set1 > 0 ? 1 : 0) +
     (setPlayer1.value.set2 > 0 || setPlayer2.value.set2 > 0 ? 1 : 0);
-
+console.log("totalSetsPlayed",totalSetsPlayed)
   // Retorna o próximo set a ser atualizado
   if (totalSetsPlayed === 0) return 'set1';
   if (totalSetsPlayed === 1) return 'set2';
@@ -293,12 +318,11 @@ function checkGameOver() {
 
   return player1SetsWon === 2 || player2SetsWon === 2;
 }
-// Função para resetar pontos de um game
-function resetGame() {
-  player1Points.value = 0;
-  player2Points.value = 0;
-}
 
+function resetGame() {
+  scores.value.player1 = 0;
+  scores.value.player2 = 0;
+}
 // Função para resetar um set
 function resetSet() {
   player1Games.value = 0;
@@ -315,7 +339,7 @@ function resetSet() {
   const formattedTime = computed(() => {
     const minutes = String(Math.floor(timer.value / 60)).padStart(2, '0');
     const seconds = String(timer.value % 60).padStart(2, '0');
-    return ${minutes}:${seconds};
+    return `${minutes}:${seconds}`;
   });
   
 
@@ -376,7 +400,7 @@ function resetSet() {
    socket.emit('updateGame', data);
 
    const code = route.query.code || '';
-   const url = /broadcast?code=${code};
+   const url = `/broadcast?code=${code}`;
    const newWindow = window.open(url, '_blank');
   
   // Aguardar a nova aba carregar e garantir que ela se conecte ao WebSocket
@@ -398,12 +422,12 @@ socket.on('timerUpdated', (data) => {
     sponsor.value=data.sponsor || ''
     player1.value= data.player1|| 'Home'
     player2.value= data.player2|| 'Away'
-    setPlayer1.value.set1=data.setPlayer1.set1
-    setPlayer1.value.set2=data.setPlayer1.set2
-    setPlayer1.value.set3=data.setPlayer1.set3
-    setPlayer2.value.set1=data.setPlayer2.set1
-    setPlayer2.value.set2=data.setPlayer2.set2
-    setPlayer2.value.set3=data.setPlayer2.set3
+    setPlayer1.value.set1=data.setPlayer1.set1 || 0
+    setPlayer1.value.set2=data.setPlayer1.set2 || null
+    setPlayer1.value.set3=data.setPlayer1.set3 || null
+    setPlayer2.value.set1=data.setPlayer2.set1 || 0
+    setPlayer2.value.set2=data.setPlayer2.set2 || null
+    setPlayer2.value.set3=data.setPlayer2.set3 || null
 
     scores.value.player1=data.scores.player1
     scores.value.player2=data.scores.player2
@@ -414,13 +438,22 @@ socket.on('timerUpdated', (data) => {
     timer.value = 0;
    };
   const resetAll = () => {
+    sponsor.value= ''
+    player1.value='Home'
+    player2.value='Away'
+    setPlayer1.value.set1=0
+    setPlayer1.value.set2=null
+    setPlayer1.value.set3=null
+    setPlayer2.value.set1=0
+    setPlayer2.value.set2= null
+    setPlayer2.value.set3=null
     timer.value = 0;
     scores.value.player1 = 0;
     scores.value.player2 = 0;
-    gameParts .value=1
-   };
+    gameParts.value=1
+  };
 
-   watch([player1, player2, sponsor, scores.value,setPlayer1.value,setPlayer2.value], () => {
+   watch([player1, player2, sponsor,timer, scores.value,setPlayer1.value,setPlayer2.value], () => {
   const data = {
     code: route.query.code || '',
     player1: player1.value || 'Home',
@@ -459,6 +492,25 @@ socket.on('timerUpdated', (data) => {
   </script>
   
   <style scoped>
+  .placeholder-white::placeholder {
+    color: white;
+    opacity: 1; /* Garante que a opacidade do placeholder seja consistente */
+  }
+
+  .custom-switch {
+  width: 40px; /* Ajusta a largura */
+  height: 20px; /* Ajusta a altura */
+  transform: scale(1.5); /* Aumenta proporcionalmente o tamanho */
+  cursor: pointer;
+}
+
+.custom-switch:checked {
+  background-color: #4caf50; /* Cor ao ativar */
+}
+
+.custom-switch:focus {
+  box-shadow: 0 0 5px #4caf50;
+}
   /* Estilização de botões */
   .btn {
     font-size: 1.2rem;

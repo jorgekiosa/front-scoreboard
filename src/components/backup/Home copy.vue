@@ -112,7 +112,7 @@ const router = useRouter();
 
   const goToNextScreen = () => {
   router.push({
-    path: '/start-serving',
+    path: '/broadcast',
     query: {
       team1Player1: team1.value.player1,
       team1Player2: team1.value.player2,

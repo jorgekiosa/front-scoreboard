@@ -181,7 +181,7 @@ const socket = io('http://localhost:3007'); // URL do servidor backend
    socket.emit('updateGame', data);
 
    const code = route.query.code || '';
-   const url = `/start-serving?code=${code}`;
+   const url = `/broadcast?code=${code}`;
    const newWindow = window.open(url, '_blank');
   
   // Aguardar a nova aba carregar e garantir que ela se conecte ao WebSocket
