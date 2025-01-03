@@ -665,7 +665,6 @@ socket.on('timerUpdated', (data) => {
     scores.value.player1=data.scores.player1
     scores.value.player2=data.scores.player2
   }
-  console.log('Atualização recebida:', data);
 });
   const resetTime = () => {
     timer.value = 0;
@@ -717,7 +716,6 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule, timer,player1Scor
 });
    // Restaura o timer ao recarregar a página
   onMounted(() => {
-    console.log("import.meta.env.VITE_WEBSOCKT_BASE_URL",import.meta.env.VITE_WEBSOCKT_BASE_URL)
     socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
     socket.on('currentTimer', (data) => {

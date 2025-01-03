@@ -102,9 +102,7 @@
 
   socket.on('gameUpdated', (updatedData) => {
   if (updatedData.code === route.query.code) {
-    console.log("Dados recebidos:", updatedData);
     data.value=updatedData
-
     sponsor.value=updatedData.sponsor || ''
     timer.value = updatedData.timer || '00:00';
     team1.value.name = updatedData.player1 || 'Home';
@@ -131,8 +129,6 @@ socket.on('timerUpdated', (data) => {
 
 // Solicita o timer ao carregar a página
 onMounted(() => {
-  console.log("route.query.code",route.query.code)
-  console.log("import.meta.env.VITE_WEBSOCKT_BASE_URL",import.meta.env.VITE_WEBSOCKT_BASE_URL)
   socket.emit('getGame', { code: route.query.code || '' });
   socket.emit('getTimer', { code: route.query.code || '' });
   socket.on('currentTimer', (data) => {
