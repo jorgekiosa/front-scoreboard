@@ -2,18 +2,18 @@
 import Points from '@/components/Points.vue'
 </script>
 <template>
-  <div class="home">
+  <div class="points">
     <Points/>
   </div>
 </template>
-<style>
-.home{
+<style scoped>
+.points{
   background-color: #033380;
   min-height: 100vh;
   display: flex;
 }
 @media (min-width: 1024px) {
-  .home {
+  .points {
     min-height: 100vh;
     display: flex;
   }

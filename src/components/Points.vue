@@ -1,11 +1,28 @@
 <template>
-    <div class="container text-center px-4">
+    <div class="container text-center px-4 mt-4">
+		<div class="col-12 text-white px-5 border-custom p-3 mb-3 d-flex justify-content-center align-items-center">
+                 <!-- Botões Laterais: Minutos -->
+<!--                     <div class="d-flex flex-column align-items-center me-3">
+                        <button class="btn btn-success mb-2 rounded-circle" @click="incrementMinutes">+</button>
+                        <button class="btn btn-success rounded-circle" @click="decrementMinutes">-</button>
+                    </div> -->
+                    <!-- Contador -->
+                    <div class="text-center">
+                        <div class="fs-2 mb-2">{{ formattedTime }}</div>
+                    </div>
+                    <!-- Botões Laterais: Segundos -->
+<!--                     <div class="d-flex flex-column align-items-center ms-3">
+                        <button class="btn btn-success mb-2 rounded-circle" @click="incrementSeconds">+</button>
+        
+                        <button class="btn btn-success rounded-circle" @click="decrementSeconds">-</button>
+                    </div> -->
+        </div>
       <div class="row text-white mb-4">
             <!-- Jogador 1 -->
         <div class="col-6 p-2">
 		  <div class="p-3 border-custom shadow">
             <p>Games: <span class="fw-bold">{{ player1Games }}</span></p>
-            <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 1" />
+            <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 1" disabled readonly />
             <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer1" :key="set" v-if="value!==null">
                 <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1(set)">-</button>
                 <span   v-if="value!==null" class="fs-3 px-2">{{ value }}</span>
@@ -23,7 +40,7 @@
         <div class="col-6 p-2">
 		 <div class="p-3 border-custom shadow">
 			<p>Games: <span class="fw-bold">{{ player2Games }}</span></p>
-			<input v-model="player2" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 2" />
+			<input v-model="player2" class="form-control mb-3 text-center text-white border-input" read-only placeholder="Jogador 2" disabled readonly />
 			<div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer2" :key="set" v-if="value!==null">
 				<button v-if="value!==null"  class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2(set)">-</button>
 				<span   v-if="value!==null" class="fs-3 px-2">{{ value }}</span>
@@ -50,23 +67,7 @@
                     <button class="btn btn-primary rounded-circle btn-custom ms-3" @click="increment">+</button>
                     </div>
                 </div>
-                <div class="col-12 border-custom p-3 mb-3 d-flex justify-content-center align-items-center">
-                 <!-- Botões Laterais: Minutos -->
-<!--                     <div class="d-flex flex-column align-items-center me-3">
-                        <button class="btn btn-success mb-2 rounded-circle" @click="incrementMinutes">+</button>
-                        <button class="btn btn-success rounded-circle" @click="decrementMinutes">-</button>
-                    </div> -->
-                    <!-- Contador -->
-                    <div class="text-center">
-                        <div class="fs-2 mb-2">{{ formattedTime }}</div>
-                    </div>
-                    <!-- Botões Laterais: Segundos -->
-<!--                     <div class="d-flex flex-column align-items-center ms-3">
-                        <button class="btn btn-success mb-2 rounded-circle" @click="incrementSeconds">+</button>
-        
-                        <button class="btn btn-success rounded-circle" @click="decrementSeconds">-</button>
-                    </div> -->
-                </div>
+
                 <div class="col-12">
 <!--                     <div class="d-flex justify-content-center">
                         <button
@@ -77,6 +78,28 @@
                             {{ isRunning ? 'Stop' : 'Start' }}
                         </button>
                     </div> -->
+					<div class="p-3 border-custom shadow"  v-if="player1Score === 40 && player2Score === 40">
+                          <p class="fs-4 fw-bolder">Escolha a regra do Deuce </p>
+                          <div class="row g-3  align-items-center">
+                            <div class="col">
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input cursor-pointer" type="radio"  id="gridRadios1" v-model="deuceRule" value="advantage" >
+                                <label class="form-check-label" for="gridRadios1">
+                                  Vantagem
+                                </label>
+                            </div>
+                            </div>
+                            <div class="col">
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" id="gridRadios1" v-model="deuceRule" value="goldenPoint">
+									<label class="form-check-label" for="gridRadios2">
+									Ponto de Ouro
+									</label>
+								</div>
+							   </div>
+							</div>
+                          </div>
+
                     <div v-if="isTieBreak">
                       <h3>Tie-Break!</h3>
                       <p>Jogador 1: {{ tieBreakPlayer1 }} - Jogador 2: {{ tieBreakPlayer2 }}</p>
@@ -91,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
+<!--         <div class="col-12">
             <div class="accordion" id="accordionExample">
             <div class="accordion-item bg-transparent border-custom">
                 <h2 class="accordion-header">
@@ -101,7 +124,7 @@
                 </h2>
                 <div id="collapseOne" :class="player1Score === 40 && player2Score === 40 ? 'show' : ''" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-<!--                     <div class="d-flex mb-4 gap-2 flex-wrap justify-content-center">
+                    <div class="d-flex mb-4 gap-2 flex-wrap justify-content-center">
                       <div>
                         <input 
                           type="checkbox" 
@@ -117,11 +140,12 @@
                         <button class="btn btn-warning text-light" @click="startStreaming">
                           <font-awesome-icon :icon="['fas', 'video']" /> Stream
                         </button>
-                    </div> -->
+                    </div>
                     <hr class="border border-white border-1 opacity-50">
                     <div class="col-12 text-white ">
                       <div class="row g-4">
-                        <div :class="player1Score === 40 && player2Score === 40?'col-6 border-custom shadow p-4 mb-4':'col-12 border-custom shadow p-4 mb-4'">
+                        <div :class="player1Score === 40 && player2Score === 40?'col-6 p-4 mb-4':'col-12 p-4 mb-4'">
+							<div class="p-3 border-custom shadow">
                           <p class="fs-4 fw-bolder">Escolha um tipo de Set </p>
                           <div class="row g-3 px-5 align-items-center">
                             <div class="col">
@@ -140,11 +164,13 @@
                                 </label>
                             </div>
                             </div>
+                            </div>
                           </div>
                         </div>
-                        <div class="col-6 border-custom shadow p-4 mb-4" 
+                        <div class="col-6 p-4 mb-4" 
                          v-if="player1Score === 40 && player2Score === 40"
                         >
+						<div class="p-3 border-custom shadow">
                           <p class="fs-4 fw-bolder">Escolha a regra do Deuce </p>
                           <div class="row g-3 px-5 align-items-center">
                             <div class="col">
@@ -156,28 +182,29 @@
                             </div>
                             </div>
                             <div class="col">
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="gridRadios1" v-model="deuceRule" value="goldenPoint">
-                                <label class="form-check-label" for="gridRadios2">
-                                  Ponto de Ouro
-                                </label>
-                            </div>
-                            </div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" id="gridRadios1" v-model="deuceRule" value="goldenPoint">
+									<label class="form-check-label" for="gridRadios2">
+									Ponto de Ouro
+									</label>
+								</div>
+							   </div>
+							</div>
                           </div>
                         </div>
                       </div>
                     </div>
                     
-<!--                     <div class="row">
+                    <div class="row">
                       <div class="col">
                         <input v-model="sponsor" class="form-control placeholder-white mb-3 text-left text-white border-input" placeholder="Digite o nome do patrocinador" />
                       </div>
-                    </div> -->
+                    </div>
                 </div>
                 </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
 

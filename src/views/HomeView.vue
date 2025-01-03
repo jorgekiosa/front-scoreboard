@@ -6,7 +6,7 @@ import Home from '@/components/Home.vue'
     <Home/>
   </div>
 </template>
-<style>
+<style scoped>
 .home{
   background-color: #033380;
   min-height: 100vh;
