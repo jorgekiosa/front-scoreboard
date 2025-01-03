@@ -1,22 +1,36 @@
 <template>
     <div class="container text-center px-4 mt-4">
-		<div class="col-12 text-white px-5 border-custom p-3 mb-3 d-flex justify-content-center align-items-center">
-                 <!-- Botões Laterais: Minutos -->
-<!--                     <div class="d-flex flex-column align-items-center me-3">
+		<div class="col-12 text-white border-custom ">
+			<div class="row">
+			  <div class="12 p-3 mb-1 d-flex justify-content-center align-items-center">
+			        <!-- Botões Laterais: Minutos -->
+					<div class="d-flex flex-column align-items-center me-3">
                         <button class="btn btn-success mb-2 rounded-circle" @click="incrementMinutes">+</button>
                         <button class="btn btn-success rounded-circle" @click="decrementMinutes">-</button>
-                    </div> -->
+                    </div>
                     <!-- Contador -->
                     <div class="text-center">
                         <div class="fs-2 mb-2">{{ formattedTime }}</div>
                     </div>
                     <!-- Botões Laterais: Segundos -->
-<!--                     <div class="d-flex flex-column align-items-center ms-3">
+                    <div class="d-flex flex-column align-items-center ms-3">
                         <button class="btn btn-success mb-2 rounded-circle" @click="incrementSeconds">+</button>
-        
                         <button class="btn btn-success rounded-circle" @click="decrementSeconds">-</button>
-                    </div> -->
-        </div>
+                    </div>
+			   </div>
+			</div>
+
+			<div class="d-flex mb-2 gap-2 justify-content-center">
+				<button
+					class="btn btn-sm w-50"
+					:class="isRunning ? 'btn-danger' : 'btn-success'"
+					@click="startTimer"
+					>
+					{{ isRunning ? 'Stop' : 'Start' }}
+				</button>
+				<button class="btn btn-secondary text-light" @click="resetTime">Redifinir tempo</button>
+			</div>
+      </div>
       <div class="row text-white mb-4">
             <!-- Jogador 1 -->
         <div class="col-6 p-2">
