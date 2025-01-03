@@ -119,7 +119,7 @@
                     <hr class="border border-white border-1 opacity-50">
                     <div class="col-12 text-white ">
                       <div class="row g-4">
-                        <div :class="player1Score === 40 && player2Score === 40?'col-6 border-custom shadow p-4 mb-4':'col-12 border-custom shadow p-4 mb-4'">
+                        <div class="col-6 border-custom shadow p-4 mb-4">
                           <p class="fs-4 fw-bolder">Escolha um tipo de Set </p>
                           <div class="row g-3 px-5 align-items-center">
                             <div class="col">
@@ -140,10 +140,8 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-6 border-custom shadow p-4 mb-4" 
-                         v-if="player1Score === 40 && player2Score === 40"
-                        >
-                          <p class="fs-4 fw-bolder">Escolha a regra do Deuce </p>
+                        <div class="col-6 border-custom shadow p-4 mb-4">
+                          <p class="fs-4 fw-bolder">Escolha a regra</p>
                           <div class="row g-3 px-5 align-items-center">
                             <div class="col">
                               <div class="form-check form-check-inline">
