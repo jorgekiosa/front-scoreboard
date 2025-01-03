@@ -109,7 +109,7 @@
                         >
                         <label class="btn" :class="hideBoard ? 'btn-success' : 'btn-danger'" for="btn-check-2">Ocultar Placar</label>
                       </div>
-                        <button class="btn btn-warning text-light" @click="resetTime">Redifinir tenpo</button>
+                        <button class="btn btn-secondary text-light" @click="resetTime">Redifinir tempo</button>
                         <button class="btn btn-primary" @click="resetAll">Redefinir tudo</button>
                         <!-- <button class="btn btn-outline-primary">Swap teams</button> -->
                         <button class="btn btn-warning text-light" @click="startStreaming">
@@ -144,7 +144,7 @@
                         </div>
                         <div class="col-6 p-4 mb-4">
                           <div class="p-3 border-custom shadow">
-                          <p class="fs-4 fw-bolder">Escolha a regra</p>
+                          <p class="fs-4 fw-bolder">Escolha uma regra do jogo</p>
                           <div class="row g-3 px-5 align-items-center">
                             <div class="col">
                               <div class="form-check form-check-inline">
