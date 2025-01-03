@@ -129,7 +129,7 @@
   </main>
 
   <!-- Conteúdo Principal -->
-  <main class="container pt-4 px-2 mt-5 mt-sm-5 flex-grow-1">
+  <main class="container pt-4 px-4 px-sm-4 mt-5 mt-sm-5 flex-grow-1">
     <RouterView />
   </main>
 

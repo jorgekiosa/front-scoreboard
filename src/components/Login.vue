@@ -1,7 +1,7 @@
 <template>
     <div class="page-container d-flex position-relative">
       <!-- Imagem com conteúdo sobreposto -->
-      <div class="col-md-6 p-0 position-relative image-container">
+      <div class="col-md-6 p-0 position-relative image-container d-none d-md-block">
         <img
           src="@/assets/banner-tennis.jpg"
           alt="Banner Scoreboard"

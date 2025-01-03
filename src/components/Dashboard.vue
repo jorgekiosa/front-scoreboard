@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-body-tertiary p-5 rounded mt-3">
+    <div class="bg-body-tertiary p-5 rounded mt-5 mt-lg-1">
         <h2>Seja Bem-vindo, {{  userLogado ? JSON.parse(userLogado).name || "" : ""}}</h2>
         <p class="lead"></p>
     </div>
