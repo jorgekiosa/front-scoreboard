@@ -53,7 +53,7 @@
   const router = useRouter();
   const route = useRoute();
 
-  const socket = io(import.meta.env.VITE_NODE_ENV=='production'? import.meta.env.VITE_WEBSOCKT_BASE_URL || 'https://api-scoreboard-production.up.railway.app': import.meta.env.VITE_API_DEV_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' },transports: ['websocket','polling'],});
+  const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' },transports: ['websocket','polling'],});
   
   // Definição de dados de exemplo para os times
   const timer = ref(0);
