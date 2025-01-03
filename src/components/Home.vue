@@ -4,7 +4,7 @@
         <!-- Jogador 1 -->
       <div class="col-3 border-custom shadow p-4">
           <p>Games: <span class="fw-bold">{{ player1Games }}</span></p>
-          <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 1" />
+          <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Home" />
           <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer1" :key="set" v-if="value!==null">
             <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1(set)">-</button>
             <span   v-if="value!==null" class="fs-3">{{ value }}</span>
@@ -76,7 +76,7 @@
         <!-- Jogador 2 -->
         <div class="col-3 border-custom shadow p-4">
           <p>Games: <span class="fw-bold">{{ player2Games }}</span></p>
-          <input v-model="player2" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 2" />
+          <input v-model="player2" class="form-control mb-3 text-center text-white border-input" placeholder="Away" />
           <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer2" :key="set" v-if="value!==null">
             <button v-if="value!==null"  class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2(set)">-</button>
             <span   v-if="value!==null" class="fs-3">{{ value }}</span>
@@ -107,10 +107,10 @@
                           v-model="hideBoard" 
                           autocomplete="off"
                         >
-                        <label class="btn" :class="hideBoard ? 'btn-success' : 'btn-danger'" for="btn-check-2">Hide board</label>
+                        <label class="btn" :class="hideBoard ? 'btn-success' : 'btn-danger'" for="btn-check-2">Ocultar Placar</label>
                       </div>
-                        <button class="btn btn-warning text-light" @click="resetTime">Reset time</button>
-                        <button class="btn btn-primary" @click="resetAll">Reset all</button>
+                        <button class="btn btn-warning text-light" @click="resetTime">Redifinir tenpo</button>
+                        <button class="btn btn-primary" @click="resetAll">Redefinir tudo</button>
                         <!-- <button class="btn btn-outline-primary">Swap teams</button> -->
                         <button class="btn btn-warning text-light" @click="startStreaming">
                           <font-awesome-icon :icon="['fas', 'video']" /> Stream
@@ -119,28 +119,31 @@
                     <hr class="border border-white border-1 opacity-50">
                     <div class="col-12 text-white ">
                       <div class="row g-4">
-                        <div class="col-6 border-custom shadow p-4 mb-4">
-                          <p class="fs-4 fw-bolder">Escolha um tipo de Set </p>
+                        <div class="col-6 p-4 mb-4">
+                          <div class="p-3 border-custom shadow">
+                          <p class="fs-4 fw-bolder">Escolha um tipo de set </p>
                           <div class="row g-3 px-5 align-items-center">
                             <div class="col">
                               <div class="form-check form-check-inline">
                                 <input class="form-check-input cursor-pointer" type="radio"  id="gridRadios1" v-model="setType" value="normal" >
                                 <label class="form-check-label" for="gridRadios1">
-                                  Set Normal
+                                   Normal
                                 </label>
                             </div>
                             </div>
                             <div class="col">
                               <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" id="gridRadios1" v-model="setType" value="pontosCorridos">
-                                <label class="form-check-label" for="gridRadios2">
-                                  Set com Pontos Corridos
-                                </label>
-                            </div>
+                                  <label class="form-check-label" for="gridRadios2">
+                                    Com Pontos Corridos
+                                  </label>
+                              </div>
+                             </div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-6 border-custom shadow p-4 mb-4">
+                        <div class="col-6 p-4 mb-4">
+                          <div class="p-3 border-custom shadow">
                           <p class="fs-4 fw-bolder">Escolha a regra</p>
                           <div class="row g-3 px-5 align-items-center">
                             <div class="col">
@@ -157,7 +160,8 @@
                                 <label class="form-check-label" for="gridRadios2">
                                   Ponto de Ouro
                                 </label>
-                            </div>
+                              </div>
+                             </div>
                             </div>
                           </div>
                         </div>
@@ -166,7 +170,7 @@
                     
                     <div class="row">
                       <div class="col">
-                        <input v-model="sponsor" class="form-control placeholder-white mb-3 text-left text-white border-input" placeholder="Digite o nome do patrocinador" />
+                        <input v-model="sponsor" class="form-control mb-3 text-left text-white border-input" placeholder="Digite o nome do patrocinador" />
                       </div>
                     </div>
                 </div>
@@ -216,14 +220,14 @@ const isTieBreak = ref(false);
 const tieBreakPlayer1 = ref(0);
 const tieBreakPlayer2 = ref(0);
 // Estados para os jogadores
-const player1 = ref('Home');
+const player1 = ref('');
 const setPlayer1=ref({
   set1:0,
   set2:null,
   set3:null
 })
 
-const player2 = ref('Away');
+const player2 = ref('');
 const setPlayer2=ref({
   set1:0,
   set2:null,
@@ -738,12 +742,15 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule, timer,player1Scor
   </script>
   
   <style scoped>
-  .placeholder-white::placeholder {
+  ::placeholder {
     color: white;
-    opacity: 1; /* Garante que a opacidade do placeholder seja consistente */
+    opacity: 1;
   }
-
-  .custom-switch {
+  :focus::placeholder {
+    opacity: 0;
+  }
+ 
+.custom-switch {
   width: 40px; /* Ajusta a largura */
   height: 20px; /* Ajusta a altura */
   transform: scale(1.5); /* Aumenta proporcionalmente o tamanho */

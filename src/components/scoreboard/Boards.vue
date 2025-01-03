@@ -17,7 +17,7 @@
               @input="filterUsers"
             />
           </div>
-          <!-- Botão de Adicionar Utilizador -->
+          <!-- Botão de Adicionar Board -->
           <button
             class="btn btn-danger ms-3"
             @click="openAddUserOffcanvas"
@@ -137,7 +137,7 @@
       role="dialog"
     >
       <div class="offcanvas-header">
-        <h5>{{ isEditing ? 'Editar Utilizador' : 'Adicionar Utilizador' }}</h5>
+        <h5>{{ isEditing ? 'Editar Board' : 'Adicionar Board' }}</h5>
         <button
           type="button"
           class="btn-close"
@@ -154,7 +154,7 @@
               type="text"
               class="form-control"
               id="name"
-              placeholder="Insira o nome completo"
+              placeholder="Insira o nome"
               required
             />
           </div>
