@@ -207,13 +207,11 @@ const returnRouteName = computed(() => {
 })
 
 const islogado=()=>{
-    console.log("CHEGOU1")
   if (
     userLogado.value == null ||
     userLogado.value == "" ||
     userLogado.value.length == 0
   ) {
-    console.log("CHEGOU2")
     router.push('/auth')
   }
 }
