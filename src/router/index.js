@@ -3,6 +3,7 @@ import AuthLayout from '@/layouts/AuthLayout.vue'
 import ScoreBoardLayout from '@/layouts/ScoreBoardLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import HomeView from '../views/HomeView.vue'
+import PointsView from '../views/PointsView.vue'
 import WelcomeView from '../views/WelcomeView.vue'
 import Dashboard from '../views/DashboardView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -41,6 +42,11 @@ const router = createRouter({
           path: '/board',
           name: 'board',
           component: HomeView,
+        },
+        {
+          path: '/points',
+          name: 'points',
+          component: PointsView,
         },
       ],
     },

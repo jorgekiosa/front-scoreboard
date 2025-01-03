@@ -1,26 +1,45 @@
 <template>
-    <div class="container text-center  px-5 mt-5">
-      <div class="row justify-content-center text-white mb-4 g-4">
-        <!-- Jogador 1 -->
-      <div class="col-3 border-custom shadow p-4">
-          <p>Games: <span class="fw-bold">{{ player1Games }}</span></p>
-          <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 1" />
-          <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer1" :key="set" v-if="value!==null">
-            <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1(set)">-</button>
-            <span   v-if="value!==null" class="fs-3">{{ value }}</span>
-            <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1(set)">+</button>
+    <div class="container text-center px-4">
+      <div class="row text-white mb-4">
+            <!-- Jogador 1 -->
+        <div class="col-6 p-2">
+		  <div class="p-3 border-custom shadow">
+            <p>Games: <span class="fw-bold">{{ player1Games }}</span></p>
+            <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 1" />
+            <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer1" :key="set" v-if="value!==null">
+                <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1(set)">-</button>
+                <span   v-if="value!==null" class="fs-3 px-2">{{ value }}</span>
+                <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1(set)">+</button>
+            </div>
+            <div class="d-flex mb-2 justify-content-between align-items-center">
+                <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
+                <span class="fs-3 px-2">{{ player1Score }}</span>
+                <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
+            </div>
           </div>
-          <div class="d-flex justify-content-between align-items-center">
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
-            <span class="fs-3">{{ player1Score }}</span>
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
+        </div>
+
+        <!-- Jogador 2 -->
+        <div class="col-6 p-2">
+		 <div class="p-3 border-custom shadow">
+			<p>Games: <span class="fw-bold">{{ player2Games }}</span></p>
+			<input v-model="player2" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 2" />
+			<div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer2" :key="set" v-if="value!==null">
+				<button v-if="value!==null"  class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2(set)">-</button>
+				<span   v-if="value!==null" class="fs-3 px-2">{{ value }}</span>
+				<button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2(set)">+</button>
+			</div>
+			<div class="d-flex mb-2 justify-content-between align-items-center">
+				<button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
+				<span class="fs-3 px-2">{{ player2Score }}</span>
+				<button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
+			</div>
           </div>
-      </div>
-  
-        <!-- Timer -->
-        <div class="col-4 px-5">
+        </div>
+         <!-- Timer -->
+        <div class="col-12 px-5 mb-2">
             <div class="row">
-                <div v-if="false" class="col-12 border-custom d-flex justify-content-center align-items-center mb-2">
+                <div v-if="false" class="col-12 border-custom  d-flex justify-content-center align-items-center mb-2">
                     <!-- Caixa principal com borda -->
                     <div class="d-flex justify-content-center align-items-center px-4 py-2">
                     <!-- Botão de decremento -->
@@ -71,22 +90,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Jogador 2 -->
-        <div class="col-3 border-custom shadow p-4">
-          <p>Games: <span class="fw-bold">{{ player2Games }}</span></p>
-          <input v-model="player2" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 2" />
-          <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer2" :key="set" v-if="value!==null">
-            <button v-if="value!==null"  class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2(set)">-</button>
-            <span   v-if="value!==null" class="fs-3">{{ value }}</span>
-            <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2(set)">+</button>
-          </div>
-          <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
-            <span class="fs-3">{{ player2Score }}</span>
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
-          </div>
         </div>
         <div class="col-12">
             <div class="accordion" id="accordionExample">
@@ -673,8 +676,8 @@ socket.on('timerUpdated', (data) => {
     deuceRule.value=''
     currentSet.value = 1;
     sponsor.value= ''
-    isTieBreak.value= false
     hideBoard.value= true
+    isTieBreak.value= false
     gameOver.value = false
     player1.value='Home'
     player2.value='Away'
@@ -740,6 +743,12 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule, timer,player1Scor
   </script>
   
   <style scoped>
+  .home{
+  background-color: #033380;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
   .placeholder-white::placeholder {
     color: white;
     opacity: 1; /* Garante que a opacidade do placeholder seja consistente */

@@ -76,6 +76,14 @@
                     </li>
                     <li>
                       <button
+                        class="dropdown-item"
+                        @click="handlePointsControl(score.code)"
+                      >
+                       <font-awesome-icon :icon="['fas', 'table']" /> Controle Pontos
+                      </button>
+                    </li>
+                    <li>
+                      <button
                         class="dropdown-item btn btn-outline-danger"
                         @click="openModalConfirm(score)"
                       >
@@ -335,6 +343,11 @@ const generateRandomNumber = () => {
 // Função do botão "Começar"
 const handleConfig = (code) => {
   router.push(`/board?code=${code}`);
+  
+};
+
+const handlePointsControl = (code) => {
+  router.push(`/points?code=${code}`);
   
 };
 

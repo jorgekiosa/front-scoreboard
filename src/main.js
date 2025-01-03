@@ -9,12 +9,12 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
-import { faUserSecret,faUser, faTrashAlt, faPencilAlt, faCog, faVideo  } from '@fortawesome/free-solid-svg-icons'
+import { faUserSecret,faUser, faTrashAlt, faPencilAlt, faCog, faVideo, faTable, faSquare , faTrophy } from '@fortawesome/free-solid-svg-icons'
 
 
 
 /* add icons to the library */
-library.add(faUserSecret,faUser, faTrashAlt, faPencilAlt, faCog, faVideo )
+library.add(faUserSecret,faUser, faTrashAlt, faPencilAlt, faCog, faVideo, faTable, faSquare, faTrophy )
 
 
 
