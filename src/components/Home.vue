@@ -193,7 +193,7 @@
 
 
 // Conexão com o servidor WebSocket em outro projeto
-const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007'); // URL do servidor backend
+const socket = io(import.meta.env.VITE_NODE_ENV=='production'? import.meta.env.VITE_WEBSOCKT_BASE_URL || 'https://api-scoreboard-production.up.railway.app': import.meta.env.VITE_API_DEV_BASE_URL || 'http://localhost:3007'); // URL do servidor backend
 
 const route = useRoute();
 
