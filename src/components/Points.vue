@@ -20,16 +20,19 @@
 			   </div>
 			</div>
 
-			<div class="d-flex mb-2 gap-2 justify-content-center">
+			<div class="d-flex mb-2 gap-1 justify-content-center flex-wrap">
 				<button
-					class="btn btn-sm w-50"
+					class="btn btn-sm w-50 w-md-auto"
 					:class="isRunning ? 'btn-danger' : 'btn-success'"
 					@click="startTimer"
-					>
+				>
 					{{ isRunning ? 'Stop' : 'Start' }}
 				</button>
-				<button class="btn btn-secondary text-light" @click="resetTime">Redifinir tempo</button>
+				<button class="btn btn-secondary text-light btn-sm w-48 w-md-auto" @click="resetTime">
+					Redefinir tempo
+				</button>
 			</div>
+
       </div>
       <div class="row text-white mb-4">
             <!-- Jogador 1 -->
