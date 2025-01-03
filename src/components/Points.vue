@@ -52,23 +52,23 @@
                 </div>
                 <div class="col-12 border-custom p-3 mb-3 d-flex justify-content-center align-items-center">
                  <!-- Botões Laterais: Minutos -->
-                    <div class="d-flex flex-column align-items-center me-3">
+<!--                     <div class="d-flex flex-column align-items-center me-3">
                         <button class="btn btn-success mb-2 rounded-circle" @click="incrementMinutes">+</button>
                         <button class="btn btn-success rounded-circle" @click="decrementMinutes">-</button>
-                    </div>
+                    </div> -->
                     <!-- Contador -->
                     <div class="text-center">
                         <div class="fs-2 mb-2">{{ formattedTime }}</div>
                     </div>
                     <!-- Botões Laterais: Segundos -->
-                    <div class="d-flex flex-column align-items-center ms-3">
+<!--                     <div class="d-flex flex-column align-items-center ms-3">
                         <button class="btn btn-success mb-2 rounded-circle" @click="incrementSeconds">+</button>
         
                         <button class="btn btn-success rounded-circle" @click="decrementSeconds">-</button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-12">
-                    <div class="d-flex justify-content-center">
+<!--                     <div class="d-flex justify-content-center">
                         <button
                             class="btn btn-lg w-100"
                             :class="isRunning ? 'btn-danger' : 'btn-success'"
@@ -76,7 +76,7 @@
                             >
                             {{ isRunning ? 'Stop' : 'Start' }}
                         </button>
-                    </div>
+                    </div> -->
                     <div v-if="isTieBreak">
                       <h3>Tie-Break!</h3>
                       <p>Jogador 1: {{ tieBreakPlayer1 }} - Jogador 2: {{ tieBreakPlayer2 }}</p>
@@ -101,7 +101,7 @@
                 </h2>
                 <div id="collapseOne" :class="player1Score === 40 && player2Score === 40 ? 'show' : ''" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <div class="d-flex mb-4 gap-2 flex-wrap justify-content-center">
+<!--                     <div class="d-flex mb-4 gap-2 flex-wrap justify-content-center">
                       <div>
                         <input 
                           type="checkbox" 
@@ -114,11 +114,10 @@
                       </div>
                         <button class="btn btn-warning text-light" @click="resetTime">Reset time</button>
                         <button class="btn btn-primary" @click="resetAll">Reset all</button>
-                        <!-- <button class="btn btn-outline-primary">Swap teams</button> -->
                         <button class="btn btn-warning text-light" @click="startStreaming">
                           <font-awesome-icon :icon="['fas', 'video']" /> Stream
                         </button>
-                    </div>
+                    </div> -->
                     <hr class="border border-white border-1 opacity-50">
                     <div class="col-12 text-white ">
                       <div class="row g-4">
@@ -169,11 +168,11 @@
                       </div>
                     </div>
                     
-                    <div class="row">
+<!--                     <div class="row">
                       <div class="col">
                         <input v-model="sponsor" class="form-control placeholder-white mb-3 text-left text-white border-input" placeholder="Digite o nome do patrocinador" />
                       </div>
-                    </div>
+                    </div> -->
                 </div>
                 </div>
             </div>
