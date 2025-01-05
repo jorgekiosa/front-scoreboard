@@ -60,7 +60,7 @@
   const router = useRouter();
   const route = useRoute();
 
-  const socket = io('http://localhost:3007',{query: { code:route.query.code || '' }});
+  const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' },transports: ['websocket','polling'],});
   
   // Definição de dados de exemplo para os times
   const timer = ref(0);
