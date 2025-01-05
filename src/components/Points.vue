@@ -32,8 +32,7 @@
 					Redefinir tempo
 				</button>
 			</div>
-
-      </div>
+       </div>
       <div class="row text-white mb-4">
             <!-- Jogador 1 -->
         <div class="col-6 p-2">
@@ -86,7 +85,7 @@
                 </div>
 
                 <div class="col-12">
-<!--                     <div class="d-flex justify-content-center">
+					<!--<div class="d-flex justify-content-center">
                         <button
                             class="btn btn-lg w-100"
                             :class="isRunning ? 'btn-danger' : 'btn-success'"
@@ -131,7 +130,7 @@
                 </div>
             </div>
         </div>
-<!--         <div class="col-12">
+<!--<div class="col-12">
             <div class="accordion" id="accordionExample">
             <div class="accordion-item bg-transparent border-custom">
                 <h2 class="accordion-header">

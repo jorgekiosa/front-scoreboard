@@ -1,5 +1,5 @@
 <template>
-  <div class="container text-center  px-5 mt-5">
+  <div class="container text-center px-4 mt-4">
     <div v-if="route.query.c=='p'">
     <div class="col-12 text-white border-custom">
       <div class="row">
