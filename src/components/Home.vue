@@ -148,7 +148,7 @@
                             {{ isRunning ? 'Stop' : 'Start' }}
                         </button>
                     </div>
-                    <div v-if="isTieBreak">
+                    <div v-if="isTieBreak && route.query.c=='c'">
                       <h3>Tie-Break!</h3>
                       <p>Jogador 1: {{ tieBreakPlayer1 }} - Jogador 2: {{ tieBreakPlayer2 }}</p>
                       <div class="d-flex mb-4 gap-5 flex-wrap justify-content-center">
