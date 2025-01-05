@@ -1,96 +1,6 @@
 <template>
-  <div class="container text-center  px-5 mt-5">
-    <div v-if="route.query.c=='p'">
-    <div class="col-12 text-white border-custom">
-      <div class="row">
-        <div class="12 p-3 mb-1 d-flex justify-content-center align-items-center">
-              <!-- Botões Laterais: Minutos -->
-          <div class="d-flex flex-column align-items-center me-3">
-                        <button class="btn btn-success mb-2 rounded-circle" @click="incrementMinutes">+</button>
-                        <button class="btn btn-success rounded-circle" @click="decrementMinutes">-</button>
-                    </div>
-                    <!-- Contador -->
-                    <div class="text-center">
-                        <div class="fs-2 mb-2">{{ formattedTime }}</div>
-                    </div>
-                    <!-- Botões Laterais: Segundos -->
-                    <div class="d-flex flex-column align-items-center ms-3">
-                        <button class="btn btn-success mb-2 rounded-circle" @click="incrementSeconds">+</button>
-                        <button class="btn btn-success rounded-circle" @click="decrementSeconds">-</button>
-                    </div>
-              </div>
-            </div>
-
-          <div class="d-flex mb-2 gap-1 justify-content-center flex-wrap">
-            <button
-              class="btn btn-sm w-49 w-md-auto"
-              :class="isRunning ? 'btn-danger' : 'btn-success'"
-              @click="startTimer"
-            >
-              {{ isRunning ? 'Stop' : 'Start' }}
-            </button>
-            <button class="btn btn-secondary text-light btn-sm w-48 w-md-auto" @click="resetTime">
-              Redefinir tempo
-            </button>
-          </div>
-        </div>
-        <div class="row text-white mb-4">
-            <!-- Jogador 1 -->
-        <div class="col-6 p-2">
-          <div class="p-3 border-custom shadow">
-              <p>Games: <span class="fw-bold">{{ player1Games }}</span></p>
-              <input v-model="player1" class="form-control mb-3 text-center text-white border-input" placeholder="Jogador 1" disabled readonly />
-              <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer1" :key="set" v-if="value!==null">
-                  <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer1(set)">-</button>
-                  <span   v-if="value!==null" class="fs-3 px-2">{{ value }}</span>
-                  <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1(set)">+</button>
-              </div>
-              <div class="d-flex mb-2 justify-content-between align-items-center">
-                  <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
-                  <span class="fs-3 px-2">{{ player1Score }}</span>
-                  <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
-              </div>
-            </div>
-          </div>
-
-        <!-- Jogador 2 -->
-        <div class="col-6 p-2">
-          <div class="p-3 border-custom shadow">
-            <p>Games: <span class="fw-bold">{{ player2Games }}</span></p>
-            <input v-model="player2" class="form-control mb-3 text-center text-white border-input" read-only placeholder="Jogador 2" disabled readonly />
-            <div class="d-flex mb-2 justify-content-between align-items-center" v-for="(value, set) in setPlayer2" :key="set" v-if="value!==null">
-              <button v-if="value!==null"  class="btn btn-outline-primary rounded-circle" @click="decrementSetPlayer2(set)">-</button>
-              <span   v-if="value!==null" class="fs-3 px-2">{{ value }}</span>
-              <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2(set)">+</button>
-            </div>
-            <div class="d-flex mb-2 justify-content-between align-items-center">
-              <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
-              <span class="fs-3 px-2">{{ player2Score }}</span>
-              <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 px-5 mb-2">
-          <div class="row">
-              <div class="col-12">
-                  <div v-if="isTieBreak">
-                    <h3>Tie-Break!</h3>
-                    <p>Jogador 1: {{ tieBreakPlayer1 }} - Jogador 2: {{ tieBreakPlayer2 }}</p>
-                    <div class="d-flex mb-4 gap-5 flex-wrap justify-content-center">
-                      <button class="btn btn-success mb-2 rounded-circle" @click="incrementTieBreakPlayer1">+1</button>
-                      <button class="btn btn-success mb-2 rounded-circle" @click="incrementTieBreakPlayer2">+1</button>
-                    </div>
-                  </div>
-                  <div v-if="gameOver" class="text-center mt-3">
-                    <h3 class="text-success">Jogo Finalizado! 🎾</h3>
-                  </div>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-     <div class="row justify-content-center text-white mb-4 g-4" v-if="route.query.c=='c'">
+    <div class="container text-center  px-5 mt-5">
+      <div class="row justify-content-center text-white mb-4 g-4">
         <!-- Jogador 1 -->
       <div class="col-3 border-custom shadow p-4">
           <p>Games: <span class="fw-bold">{{ player1Games }}</span></p>
@@ -101,9 +11,9 @@
             <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1(set)">+</button>
           </div>
           <div class="d-flex justify-content-between align-items-center">
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
             <span class="fs-3">{{ player1Score }}</span>
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
           </div>
       </div>
   
@@ -173,9 +83,9 @@
             <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2(set)">+</button>
           </div>
           <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
             <span class="fs-3">{{ player2Score }}</span>
-            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
           </div>
         </div>
         <div class="col-12">

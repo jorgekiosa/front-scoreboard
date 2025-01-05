@@ -31,7 +31,7 @@
           <thead>
             <tr>
               <th scope="col">Data de criação</th> 
-              <th scope="col">Codigo</th> 
+              <th scope="col">Código</th> 
               <th scope="col">Estado</th> 
               <th scope="col">Nome</th> 
               <th scope="col">Ações</th>
@@ -384,12 +384,12 @@ const generateRandomNumber = () => {
 
 // Função do botão "Começar"
 const handleConfig = (code) => {
-  router.push(`/board?code=${code}`);
+  router.push(`/board?code=${code}&c=c`);
   
 };
 
 const handlePointsControl = (code) => {
-  router.push(`/points?code=${code}`);
+  router.push(`/points?code=${code}&c=p`);
   
 };
 

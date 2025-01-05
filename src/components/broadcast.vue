@@ -1,31 +1,31 @@
 <template>
-    <div class="scoreboard bg-light p-3 rounded" v-if="hideBoard">
-      <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="scoreboard p-3 rounded" v-if="hideBoard">
+      <div class="d-flex justify-content-between align-items-center mb-1">
         <!-- Container com duas divs separadas -->
         <div class="d-flex">
           <!-- Div para os minutos -->
-          <div class="timer bg-white px-4 rounded-3 me-2">
-            <span class="fs-6 fw-bold text-primary">{{ formattedTime}}</span>
+          <div class="timer bg-placar px-4 me-1">
+            <span class="fs-6 fw-bold text-white">{{ formattedTime}}</span>
           </div>
   
           <!-- Div para o nome ALPROME -->
-          <div v-if="sponsor" class="game-name bg-white px-4 rounded-3">
-            <span class="fs-6 fw-bold text-primary">{{sponsor}}</span>
+          <div v-if="sponsor" class="game-name bg-placar px-4">
+            <span class="fs-6 fw-bold text-white">{{sponsor}}</span>
           </div>
         </div>
       </div>
-  
+  <pre>{{data}}</pre>
       <div class="teams">
-        <div class="team bg-primary p-1 rounded text-white mb-2">
+        <div class="team bg-placar p-1 text-white">
           <div class="d-flex justify-content-between align-items-center">
             <span class="team-name fs-6 fw-bold">{{team1.name}}</span>
             <div class="team-score d-flex align-items-center">
               <span v-if="team1.set1!==null" class="set-score fs-4 fw-bolder me-2">{{team1.set1}}</span>
               <span v-if="team1.set2!==null" class="set-score fs-4 fw-bolder me-2">{{team1.set2}}</span>
               <span v-if="team1.set3!==null" class="set-score fs-4 fw-bolder me-2">{{team1.set3}}</span>
-              <span :class="
+              <span v-if="data?.gameOver==false" :class="
                  team1.totalScore=='VT'?'total-score fs-4 fw-bolder text-white border border-2 border-white rounded px-2':
-                 team1.totalScore==40&&team2.totalScore?'total-score fs-4 fw-bolder text-warning border border-2 border-warning rounded px-2':
+                 team1.totalScore==40&&team2.totalScore==40&&data?.deuceRule==='goldenPoint'?'total-score fs-4 fw-bolder text-white bg-gold-point border-gold-point rounded px-2':
                 'total-score fs-4 fw-bolder text-white border border-2 border-white rounded px-2'">
                 {{team1.totalScore}}
             </span>
@@ -33,16 +33,16 @@
           </div>
         </div>
         
-        <div class="team bg-primary p-1 rounded text-white">
+        <div class="team bg-placar p-1 text-white">
           <div class="d-flex justify-content-between align-items-center">
             <span class="team-name fs-6 fw-bold">{{team2.name}}</span>
             <div class="team-score d-flex align-items-center">
               <span v-if="team2.set1!==null" class="set-score fs-4 fw-bolder me-2">{{team2.set1}}</span>
               <span v-if="team2.set2!==null" class="set-score fs-4 fw-bolder me-2">{{team2.set2}}</span>
               <span v-if="team2.set3!==null" class="set-score fs-4 fw-bolder me-2">{{team2.set3}}</span>
-              <span :class="
+              <span v-if="data?.gameOver==false" :class="
                  team2.totalScore=='VT'?'total-score fs-4 fw-bolder text-white border border-2 border-white rounded px-2':
-                 team1.totalScore==40&&team2.totalScore?'total-score fs-4 fw-bolder text-warning border border-2 border-warning rounded px-2':
+                 team1.totalScore==40&&team2.totalScore==40&&data?.deuceRule==='goldenPoint'?'total-score fs-4 fw-bolder text-white bg-gold-point border-gold-point rounded px-2':
                 'total-score fs-4 fw-bolder text-white border border-2 border-white rounded px-2'">
                 {{team2.totalScore}}
             </span>
@@ -67,6 +67,7 @@
   const isRunning = ref(false);
   const sponsor = ref('');
   const hideBoard =ref(true)
+  const deuceRule = ref('')
   const team1 = ref({
     name: 'Home',
     setScores: 0,
@@ -111,6 +112,7 @@
     data.value=updatedData
 
     sponsor.value=updatedData.sponsor || ''
+    deuceRule.value=updatedData.deuceRule || ''
     timer.value = updatedData.timer || '00:00';
     team1.value.name = updatedData.player1 || 'Home';
     team1.value.set1 = updatedData?.setPlayer1?.set1 || 0;
@@ -148,7 +150,19 @@ onMounted(() => {
 
 </script>
   
-  <style scoped>
+<style scoped>
+.bg-placar{
+  background-color:#172131
+}
+.bg-gold-point{
+  background-color:#be9826
+}
+.text-gold-point{
+  background-color:#be9826
+}
+.border-gold-point{
+  border: 1px solid #be9826
+}
   .scoreboard {
     max-width: 350px;
   }
