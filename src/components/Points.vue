@@ -22,7 +22,7 @@
 
 			<div class="d-flex mb-2 gap-1 justify-content-center flex-wrap">
 				<button
-					class="btn btn-sm w-50 w-md-auto"
+					class="btn btn-sm w-49 w-md-auto"
 					:class="isRunning ? 'btn-danger' : 'btn-success'"
 					@click="startTimer"
 				>

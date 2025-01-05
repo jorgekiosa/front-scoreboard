@@ -30,14 +30,18 @@
         <table class="table table-hover">
           <thead>
             <tr>
+              <th scope="col">Data de criação</th> 
               <th scope="col">Codigo</th> 
+              <th scope="col">Estado</th> 
               <th scope="col">Nome</th> 
               <th scope="col">Ações</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="score in paginatedUsers" :key="score.id">
+              <td>{{ createdAtC(score.date) }}</td>
               <td>{{ score.code }}</td>
+              <td><span class="badge" :class="returnColorStatus(score.status)">{{score.status==1?'Em andamento':'Finalizado'}}</span></td>
               <td>{{ score.name }}</td>
               <td>
                 <div class="dropdown">
@@ -158,8 +162,14 @@
               required
             />
           </div>
+          <div class="mb-3" v-if="isEditing">
+            <label for="mail" class="form-labeel">Estados</label>
+            <select class="form-select" aria-label="Default select example"  v-model="newScore.status">
+              <option v-for="status in listStatus" :key="status.id" :value="status.id">{{status.value}}</option>
+            </select>
+          </div>
           <div class="mb-3">
-            <label for="email" class="form-label">Descrição</label>
+            <label for="mail" class="form-labeel">Descrição</label>
             <textarea class="form-control" id="exampleFormControlTextarea1" v-model="newScore.description" rows="3"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" :disabled="isLoadVisible">
@@ -245,15 +255,27 @@ const newScore = reactive({
   code: '',
   name: '',
   description: '',
+  status:1,
   sport_type: '',
 });
+
+const listStatus= ref([
+  {
+    id:1,
+    value:'Em andamento'
+  },
+  {
+    id:2,
+    value:'Finalizado'
+  }
+])
 
 // Variável para armazenar a consulta de pesquisa
 const searchQuery = ref('');
 
 // Variáveis para paginação
 const currentPage = ref(1);
-const itemsPerPage = 5;
+const itemsPerPage = 6;
 
 const filteredBoards = computed(() => {
   if (!searchQuery.value) return scoreStoreDefault.scores;
@@ -278,6 +300,25 @@ function changePage(page) {
   if (page > 0 && page <= totalPages.value) {
     currentPage.value = page;
   }
+}
+
+const createdAtC=(created)=>{
+  if (created)
+  return (
+    created.toString().split("T")[0].split("-").reverse().join("/") +
+      " - Horas: " +
+      created.toString().split("T")[1].split(".")[0]
+    );
+  else return "------";
+}
+
+const returnColorStatus = (item)=>{
+  if(item==1){
+    return 'text-bg-primary'
+  }else{
+    return 'text-bg-success'
+  }
+
 }
 
 const openModal = (item) => {
@@ -314,6 +355,7 @@ function openEditUserOffcanvas(score) {
   newScore.code = score.code;
   newScore.name = score.name;
   newScore.description = score.description;
+  newScore.status = score.status;
   newScore.sport_type = score.sport_type;
   showOffcanvas.value = true;
 }
@@ -503,6 +545,7 @@ function resetForm() {
   newScore.code = '';
   newScore.name = '';
   newScore.description = '';
+  newScore.status = 1;
   newScore.sport_type = '';
   editingIndex.value = -1;
 }
