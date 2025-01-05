@@ -509,12 +509,12 @@ const deleteScore = async ()=> {
   isLoadVisible.value = true
   const result = await scoreStoreDefault.deleteScore(selectedItem.value.id);
       if (result.code == 1) {
+        showToast()
+        closeModalConfirm()
         setTimeout(() => {
           message.value='Operação realizada com sucesso (^_-).'
           isLoadVisible.value = false
           listScore()
-          closeModalConfirm()
-          showToast()
         }, 1000);
       }else if (result.code == 2) {
         isLoadVisible.value = false
