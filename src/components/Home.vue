@@ -285,10 +285,10 @@
 
 
 // Conexão com o servidor WebSocket em outro projeto
-const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007'); // URL do servidor backend
+
 
 const route = useRoute();
-
+const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' },transports: ['websocket','polling'],}); // URL do servidor backend
 const hideBoard=ref(true)
 
 // Estados para pontos, games e sets
@@ -733,6 +733,7 @@ socket.on('timerUpdated', (data) => {
 
  socket.on('gameUpdated', (data) => {
   if (data.code === route.query.code) {
+    console.log("Dados Actualização:", data);
     deuceRule.value=data.deuceRule || ''
     currentSet.value=data.currentSet || 1
     sponsor.value=data.sponsor || ''

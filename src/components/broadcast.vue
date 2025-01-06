@@ -126,6 +126,7 @@
     team2.value.set3 = updatedData?.setPlayer2?.set3 || null;
     team2.value.totalScore = updatedData?.player2Score || 0;
   }
+  
 });
 
 // Recebe atualizações do timer
