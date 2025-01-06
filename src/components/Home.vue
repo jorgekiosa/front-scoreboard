@@ -202,8 +202,8 @@
                         <button class="btn btn-secondary text-light" @click="resetTime">Redifinir tempo</button>
                         <button class="btn btn-primary" @click="resetAll">Redefinir tudo</button>
                         <!-- <button class="btn btn-outline-primary">Swap teams</button> -->
-                        <!-- <button class="btn btn-danger text-light" @click="disconnectClient">Desconectar Cliente</button> -->
-                       <!--  <button class="btn btn-success text-light" @click="reconnectClient">Reconectar Cliente</button> -->
+<!--                         <button class="btn btn-danger text-light" @click="disconnectClient">Desconectar Cliente</button>
+                        <button class="btn btn-success text-light" @click="reconnectClient">Reconectar Cliente</button> -->
                         <button class="btn btn-warning text-light" @click="startStreaming">
                           <font-awesome-icon :icon="['fas', 'video']" /> Stream
                         </button>
@@ -864,7 +864,7 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule, timer,player1Scor
 });
    // Restaura o timer ao recarregar a página
   onMounted(() => {
-    connectSocket()
+    //connectSocket()
     socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
     socket.on('currentTimer', (data) => {
