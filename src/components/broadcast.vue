@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-  <pre>{{data}}</pre>
+  <!-- <pre>{{data}}</pre> -->
       <div class="teams">
         <div class="team bg-placar p-1 text-white">
           <div class="d-flex justify-content-between align-items-center">

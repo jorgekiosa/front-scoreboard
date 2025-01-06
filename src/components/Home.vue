@@ -202,6 +202,8 @@
                         <button class="btn btn-secondary text-light" @click="resetTime">Redifinir tempo</button>
                         <button class="btn btn-primary" @click="resetAll">Redefinir tudo</button>
                         <!-- <button class="btn btn-outline-primary">Swap teams</button> -->
+                        <button class="btn btn-danger text-light" @click="disconnectClient">Desconectar Cliente</button>
+                       <!--  <button class="btn btn-success text-light" @click="reconnectClient">Reconectar Cliente</button> -->
                         <button class="btn btn-warning text-light" @click="startStreaming">
                           <font-awesome-icon :icon="['fas', 'video']" /> Stream
                         </button>
@@ -288,7 +290,7 @@
 
 
 const route = useRoute();
-const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' },transports: ['websocket','polling'],}); // URL do servidor backend
+const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' },transports: ['websocket','polling'],reconnection: true,reconnectionAttempts: 5,reconnectionDelay: 1000}); // URL do servidor backend
 const hideBoard=ref(true)
 
 // Estados para pontos, games e sets
@@ -757,6 +759,60 @@ socket.on('timerUpdated', (data) => {
     scores.value.player2=data.scores.player2
   }
 });
+
+// Função para inicializar a conexão WebSocket
+const connectSocket = () => {
+    // Evento de notificação de desconexão
+    socket.on('forceLogout', () => {
+        alert('Você foi desconectado do servidor!');
+        socket.disconnect();
+        resetAll()
+    });
+
+ /*    socket.on('forceConnected', () => {
+        alert('Você foi Conectado Ao Servidor!');
+        if (!socket.connected) {
+            socket.connect();  // Tenta se reconectar
+        }
+    }); */
+
+    socket.on('connect', () => {
+        //alert('Conectado ao servidor!');
+    });
+
+
+    socket.on('reconnect', (attempt) => {
+        alert(`Reconectado ao servidor após ${attempt} tentativas!`);
+    });
+
+    socket.on('reconnect_failed', () => {
+        alert('Falha ao reconectar. Verifique sua conexão.');
+    });
+};
+
+// Desconectar o cliente de todos os dispositivos
+const disconnectClient = () => {
+    if (socket) {
+        socket.emit('forceDisconnect', { code: route.query.code });
+    }
+};
+
+const reconnectClient = () => {
+    if (socket && !socket.connected) {
+        socket.connect();  
+        socket.emit('forceReconnect', { code: route.query.code });
+        alert('Tentando reconectar manualmente ao servidor...');
+    } else {
+        alert('Você já está conectado.');
+    }
+};
+
+// Evento que garante que todos os clientes com o mesmo código se reconectem
+socket.on('forceConnected', ({ code }) => {
+    alert(`Cliente reconectado manualmente com o código: ${code}`);
+    socket.connect();
+    //connectSocket(); 
+});
   const resetTime = () => {
     timer.value = 0;
    };
@@ -808,6 +864,7 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule, timer,player1Scor
 });
    // Restaura o timer ao recarregar a página
   onMounted(() => {
+    connectSocket()
     socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
     socket.on('currentTimer', (data) => {
