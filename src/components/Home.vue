@@ -343,6 +343,7 @@ const isRunning = ref(false);
 const interval = ref(null);
 
 let lastSentData = null
+let debounceTimeout = null;
 
   // Calcula se o jogo acabou
 /* const isGameOver = computed(() => checkGameOver()); */
@@ -725,7 +726,11 @@ const increment = () => gameParts .value++;
   if (JSON.stringify(lastSentData) !== JSON.stringify(data)) {
     lastSentData = data;
     console.log("DATAAAA",lastSentData)
-    socket.emit('updateGame', data);
+    //socket.emit('updateGame', data);
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+        socket.emit("updateGame", data);
+      }, 300);
     }
   }
 
@@ -886,6 +891,8 @@ socket.emit('updateTimer', {
     code: route.query.code || '',
   });
 });
+
+
 watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,player2Score,player1Games,player2Games,scores.value,setPlayer1.value,setPlayer2.value], () => {
   const data = {
     currentSet:currentSet.value || 1,
