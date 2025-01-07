@@ -871,8 +871,9 @@ socket.on('forceConnected', ({ code }) => {
     connectSocket(); 
 });
   const resetTime = () => {
-    timer.value = 0;
-   };
+      timer.value = 0;
+      socket.emit('resetTimer', { code: route.query.code || '' });
+  };
   const resetAll = () => {
     deuceRule.value=''
     currentSet.value = 1;
@@ -897,6 +898,7 @@ socket.on('forceConnected', ({ code }) => {
     scores.value.player2 = 0;
     gameParts.value=1
     isRunning.value=false
+    resetTime()
   };
 
 /* watch(timer, () => {
