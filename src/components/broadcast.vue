@@ -54,7 +54,7 @@
   </template>
   
   <script setup>
-  import { ref,computed, onMounted } from 'vue';
+  import { ref,computed, onMounted, onUnmounted  } from 'vue';
   import { io } from 'socket.io-client';
   import { useRouter, useRoute } from 'vue-router';
   const router = useRouter();
@@ -86,6 +86,7 @@
   });
 
   const data = ref(null);
+  let isListening = false;
 
   function displayPoints(points) {
     if (points === 0) return '0';
@@ -101,54 +102,84 @@
     if (isNaN(time) || time < 0) {
         return '00:00'; 
     }
-    const minutes = String(Math.floor(time / 60)).padStart(2, '0');
-    const seconds = String(time % 60).padStart(2, '0');
-    return `${minutes}:${seconds}`;
-    });
+  const minutes = String(Math.floor(time / 60)).padStart(2, '0');
+  const seconds = String(time % 60).padStart(2, '0');
+  return `${minutes}:${seconds}`;
+ });
+
+  
+const updateLocalState=(updatedData)=>{
+  if (!updatedData || updatedData.code !== route.query.code) return;
+
+  data.value = updatedData;
+  sponsor.value = updatedData.sponsor || '';
+  deuceRule.value = updatedData.deuceRule || '';
+  timer.value = updatedData.timer || 0;
+  hideBoard.value = updatedData.hideBoard || true;
+
+  team1.value = {
+    name: updatedData.player1 || 'Home',
+    set1: updatedData?.setPlayer1?.set1 || 0,
+    set2: updatedData?.setPlayer1?.set2 || null,
+    set3: updatedData?.setPlayer1?.set3 || null,
+    totalScore: updatedData?.player1Score || 0,
+  };
+
+  team2.value = {
+    name: updatedData.player2 || 'Away',
+    set1: updatedData?.setPlayer2?.set1 || 0,
+    set2: updatedData?.setPlayer2?.set2 || null,
+    set3: updatedData?.setPlayer2?.set3 || null,
+    totalScore: updatedData?.player2Score || 0,
+  };
+}
+
+const setupSocketListeners=()=> {
+  if (isListening) return;
+  isListening = true;
 
   socket.on('gameUpdated', (updatedData) => {
-  if (updatedData.code === route.query.code) {
-    console.log("Dados recebidos:", updatedData);
-    data.value=updatedData
+    console.log('Dados recebidos:', updatedData);
+    updateLocalState(updatedData);
+  });
 
-    sponsor.value=updatedData.sponsor || ''
-    deuceRule.value=updatedData.deuceRule || ''
-    timer.value = updatedData.timer || '00:00';
-    team1.value.name = updatedData.player1 || 'Home';
-    team1.value.set1 = updatedData?.setPlayer1?.set1 || 0;
-    team1.value.set2 = updatedData?.setPlayer1?.set2 || null;
-    team1.value.set3 = updatedData?.setPlayer1?.set3 || null;
-    team1.value.totalScore = updatedData?.player1Score || 0;
-    hideBoard.value=updatedData?.hideBoard || true
-    team2.value.name = updatedData.player2 || 'Away';
-    team2.value.set1 = updatedData?.setPlayer2?.set1 || 0;
-    team2.value.set2 = updatedData?.setPlayer2?.set2 || null;
-    team2.value.set3 = updatedData?.setPlayer2?.set3 || null;
-    team2.value.totalScore = updatedData?.player2Score || 0;
-  }
-  
-});
+  socket.on('timerUpdated', (data) => {
+    if (data.code === route.query.code) {
+      timer.value = data.timer;
+      isRunning.value = data.isRunning;
+    }
+  });
 
-// Recebe atualizações do timer
-socket.on('timerUpdated', (data) => {
-  if (data.code === route.query.code) {
-    timer.value = data.timer;
-    isRunning.value = data.isRunning;
-  }
-});
-
-// Solicita o timer ao carregar a página
-onMounted(() => {
-  socket.emit('getGame', { code: route.query.code || '' });
-  socket.emit('getTimer', { code: route.query.code || '' });
   socket.on('currentTimer', (data) => {
     if (data.code === route.query.code) {
       timer.value = data.timer;
       isRunning.value = data.isRunning;
     }
   });
+}
+
+// Remove ouvintes ao sair do componente
+function removeSocketListeners() {
+  if (!isListening) return;
+  isListening = false;
+
+  socket.off('gameUpdated');
+  socket.off('timerUpdated');
+  socket.off('currentTimer');
+}
+
+
+// Solicita o timer ao carregar a página
+onMounted(() => {
+  setupSocketListeners();
+  socket.emit('getGame', { code: route.query.code || '' });
+  socket.emit('getTimer', { code: route.query.code || '' });
 });
 
+// Remove ouvintes ao desmontar o componente
+onUnmounted(() => {
+  removeSocketListeners();
+});
 </script>
   
 <style scoped>

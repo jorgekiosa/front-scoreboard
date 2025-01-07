@@ -46,9 +46,9 @@
                   <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1(set)">+</button>
               </div>
               <div class="d-flex mb-2 justify-content-between align-items-center">
-                  <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
+                  <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
                   <span class="fs-3 px-2">{{ player1Score }}</span>
-                  <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
+                  <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
               </div>
             </div>
           </div>
@@ -64,9 +64,9 @@
               <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2(set)">+</button>
             </div>
             <div class="d-flex mb-2 justify-content-between align-items-center">
-              <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
+              <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
               <span class="fs-3 px-2">{{ player2Score }}</span>
-              <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
+              <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 &&deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
             </div>
           </div>
         </div>
@@ -101,9 +101,9 @@
             <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer1(set)">+</button>
           </div>
           <div class="d-flex justify-content-between align-items-center">
-            <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer1">-</button>
             <span class="fs-3">{{ player1Score }}</span>
-            <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer1" :disabled="gameOver || isTieBreak">+</button>
           </div>
       </div>
   
@@ -173,9 +173,9 @@
             <button v-if="value!==null" class="btn btn-outline-primary rounded-circle" @click="incrementSetPlayer2(set)">+</button>
           </div>
           <div class="d-flex mb-2 justify-content-between align-items-center">
-            <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="decrementPlayer2">-</button>
             <span class="fs-3">{{ player2Score }}</span>
-            <button :class="player1Score === 40 && player2Score === 40 && deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
+            <button :class="deuceRule === 'advantage'? 'btn btn-success rounded-circle': player1Score === 40 && player2Score === 40 && deuceRule==='goldenPoint'?'btn btn-warning text-white rounded-circle':'btn btn-primary rounded-circle'" @click="incrementPlayer2" :disabled="gameOver || isTieBreak">+</button>
           </div>
         </div>
         <div class="col-12">
@@ -341,8 +341,6 @@ const deuceRule = ref(''); // Pode ser 'advantage' ou 'goldenPoint'
 const timer = ref(0); // Timer em segundos
 const isRunning = ref(false);
 const interval = ref(null);
-
-let lastSentData = null
 
   // Calcula se o jogo acabou
 /* const isGameOver = computed(() => checkGameOver()); */
@@ -660,46 +658,20 @@ const increment = () => gameParts .value++;
   if (gameParts .value > 0) gameParts .value--;
   };
   // Funções de setPlayer1
-  const incrementSetPlayer1 = (set) =>{
-    player1Score.value=0
+  const incrementSetPlayer1 = (set) =>{ 
     setPlayer1.value[set]++;
-    incrementPointSetPlayer1(setPlayer1.value[set])
   }
-
-  const incrementPointSetPlayer1 = (score) =>{
-    player1Games.value=score
-  }
-
   const decrementSetPlayer1 = (set) => {
-    if (setPlayer1.value[set] > 0){
-      setPlayer1.value[set]--;
-      decrementPointSetPlayer1(setPlayer1.value[set])
-    } 
-  };
-  const decrementPointSetPlayer1 = (score) => {
-    player1Games.value=score
+    if (setPlayer1.value[set] > 0) setPlayer1.value[set]--;
   };
 
   // Funções de setPlayer2
-  const incrementSetPlayer2 = (set) =>{
-    player2Score.value=0
-    setPlayer2.value[set]++;
-    incrementPointSetPlayer2(setPlayer2.value[set])
-  }
-  const incrementPointSetPlayer2 = (score) =>{
-    player2Games.value=score
-  }
-
+  const incrementSetPlayer2 = (set) => setPlayer2.value[set]++;
   const decrementSetPlayer2 = (set) => {
-    if (setPlayer2.value[set] > 0){
-      setPlayer2.value[set]--;
-      decrementPointSetPlayer2(setPlayer2.value[set])
-    } 
+    if (setPlayer2.value[set] > 0) setPlayer2.value[set]--;
   };
+  
 
-  const decrementPointSetPlayer2 = (score) => {
-    player2Games.value=score
-  };
   
   const startTimer = () => {
     if (isRunning.value) {
@@ -721,14 +693,6 @@ const increment = () => gameParts .value++;
     }
   };
   
-  const emitUpdate=(data)=> {
-  if (JSON.stringify(lastSentData) !== JSON.stringify(data)) {
-    lastSentData = data;
-    console.log("DATAAAA",lastSentData)
-    socket.emit('updateGame', data);
-    }
-  }
-
   const startStreaming = () => {
     const data = {
       code:route.query.code || '',
@@ -749,7 +713,7 @@ const increment = () => gameParts .value++;
       timer: timer.value,
     };
    // Emite os dados via WebSocket
-   emitUpdate(data);
+   socket.emit('updateGame', data);
 
    const code = route.query.code || '';
    const url = `/broadcast?code=${code}`;
@@ -757,7 +721,7 @@ const increment = () => gameParts .value++;
   
   // Aguardar a nova aba carregar e garantir que ela se conecte ao WebSocket
   newWindow.onload = () => {
-    emitUpdate(data);  // Emitir dados para a nova aba
+    socket.emit('updateGame', data);  // Emitir dados para a nova aba
   };
  };
 
@@ -770,7 +734,7 @@ socket.on('timerUpdated', (data) => {
 });
 
  socket.on('gameUpdated', (data) => {
-  if (data.code === route.query.code && JSON.stringify(lastSentData) !== JSON.stringify(data)) {
+  if (data.code === route.query.code) {
     console.log("Dados Actualização:", data);
     deuceRule.value=data.deuceRule || ''
     currentSet.value=data.currentSet || 1
@@ -876,17 +840,9 @@ socket.on('forceConnected', ({ code }) => {
     scores.value.player1 = 0;
     scores.value.player2 = 0;
     gameParts.value=1
-    isRunning.value=false
   };
 
-watch(timer, () => {
-socket.emit('updateTimer', {
-    timer: timer.value,
-    isRunning: isRunning.value,
-    code: route.query.code || '',
-  });
-});
-watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,player2Score,player1Games,player2Games,scores.value,setPlayer1.value,setPlayer2.value], () => {
+watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule, timer,player1Score,player2Score,player1Games,player2Games,scores.value,setPlayer1.value,setPlayer2.value], () => {
   const data = {
     currentSet:currentSet.value || 1,
     code: route.query.code || '',
@@ -902,14 +858,14 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,playe
     player2Games:player2Games.value,
     hideBoard:hideBoard.value,
     gameOver:gameOver.value,
-    deuceRule:deuceRule.value,
+    timer: timer.value,
+    deuceRule:deuceRule.value
   };
-  emitUpdate(data);
-  //socket.emit('updateGame', data); // Envia as atualizações em tempo real
+  socket.emit('updateGame', data); // Envia as atualizações em tempo real
 });
    // Restaura o timer ao recarregar a página
   onMounted(() => {
-    //connectSocket()
+    connectSocket()
     socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
     socket.on('currentTimer', (data) => {
