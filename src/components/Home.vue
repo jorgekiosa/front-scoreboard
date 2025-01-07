@@ -340,7 +340,7 @@ const deuceRule = ref(''); // Pode ser 'advantage' ou 'goldenPoint'
 // Timer
 const timer = ref(0); // Timer em segundos
 const isRunning = ref(false);
-const interval = ref(null);
+let interval = null;
 
 let lastSentData = null
 let debounceTimeout = null;
@@ -365,14 +365,26 @@ function displayPoints(points) {
   });
 
   // Funções do timer
-  const incrementMinutes = () => (timer.value += 60);
-  const decrementMinutes = () => {
-    if (timer.value >= 60) timer.value -= 60;
-  };
-  const incrementSeconds = () => (timer.value += 1);
-  const decrementSeconds = () => {
-    if (timer.value > 0) timer.value -= 1;
-  };
+  const incrementMinutes = () => {
+    timer.value += 60;
+    socket.emit('updateTimerValue', { code: route.query.code || '', timer: timer.value });
+};
+const decrementMinutes = () => {
+    if (timer.value >= 60) {
+        timer.value -= 60;
+        socket.emit('updateTimerValue', { code: route.query.code || '', timer: timer.value });
+    }
+};
+const incrementSeconds = () => {
+    timer.value += 1;
+    socket.emit('updateTimerValue', { code: route.query.code || '', timer: timer.value });
+};
+const decrementSeconds = () => {
+    if (timer.value > 0) {
+        timer.value -= 1;
+        socket.emit('updateTimerValue', { code: route.query.code || '', timer: timer.value });
+    }
+};
   
 
   // Computed para determinar o vencedor do set
@@ -702,25 +714,20 @@ const increment = () => gameParts .value++;
     player2Games.value=score
   };
   
-  const startTimer = () => {
-    if (isRunning.value) {
-      clearInterval(interval.value);
-      isRunning.value = false;
-      // Envia o status atualizado ao servidor
-      socket.emit('updateTimer', {
-        timer: timer.value,
-        isRunning: isRunning.value,
-        code: route.query.code || '',
-      });
+  const startTimer = () => { 
+    socket.emit('toggleTimer', { 
+        code: route.query.code || '' 
+    });
+    if (!isRunning.value) {
+        isRunning.value = true;
+        interval = setInterval(() => {
+            timer.value++;
+        }, 1000);
     } else {
-      interval.value = setInterval(() => {
-        timer.value++;
-        // Envia o valor atualizado do timer via WebSocket
-        socket.emit('updateTimer', { timer: timer.value, code: route.query.code || '',isRunning: true });
-      }, 1000);
-      isRunning.value = true;
+        clearInterval(interval);
+        isRunning.value = false;
     }
-  };
+};
   
   const emitUpdate=(data)=> {
   if (JSON.stringify(lastSentData) !== JSON.stringify(data)) {
@@ -767,11 +774,19 @@ const increment = () => gameParts .value++;
  };
 
  // Recebe atualizações do servidor para manter o timer sincronizado
-socket.on('timerUpdated', (data) => {
-  if (data.code === route.query.code) {
-    timer.value = data.timer; // Atualiza o timer localmente
-    isRunning.value = data.isRunning; // Atualiza o status do timer
-  }
+ socket.on('timerUpdated', (data) => {
+    if (data.code === route.query.code) {
+        timer.value = data.timer;
+        isRunning.value = data.isRunning;
+        if (isRunning.value && !interval) {
+            interval = setInterval(() => {
+                timer.value++;
+            }, 1000);
+        } else if (!isRunning.value) {
+            clearInterval(interval);
+            interval = null;
+        }
+    }
 });
 
  socket.on('gameUpdated', (data) => {
@@ -884,14 +899,14 @@ socket.on('forceConnected', ({ code }) => {
     isRunning.value=false
   };
 
-watch(timer, () => {
+/* watch(timer, () => {
 socket.emit('updateTimer', {
     timer: timer.value,
     isRunning: isRunning.value,
     code: route.query.code || '',
   });
 });
-
+ */
 
 watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,player2Score,player1Games,player2Games,scores.value,setPlayer1.value,setPlayer2.value], () => {
   const data = {
@@ -919,7 +934,7 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,playe
     //connectSocket()
     socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
-    socket.on('currentTimer', (data) => {
+/*     socket.on('currentTimer', (data) => {
       if (data.code === route.query.code) {
         timer.value = data.timer;
         isRunning.value = data.isRunning;
@@ -935,7 +950,7 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,playe
         }, 1000);
       }
       }
-    });
+    }); */
   });
   </script>
   
