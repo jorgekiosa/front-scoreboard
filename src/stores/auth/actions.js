@@ -145,13 +145,6 @@ export default {
 
     return loginUrl;
   },
-  updateContext(updData) {
-    for (const key in updData) {
-      if (key in this._userData && this._userData[key] !== updData[key]) {
-        this._userData[key] = updData[key];
-      }
-    }
-  },
   setContext(context = {}) {
     const userData = context;
     this._userData = userData.data;

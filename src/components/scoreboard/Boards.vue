@@ -64,6 +64,7 @@
                     </li>
                     <li>
                       <button
+                        :disabled="score.status==2"
                         class="dropdown-item"
                         @click="handleConfig(score.code)"
                       >
@@ -72,6 +73,7 @@
                     </li>
                     <li>
                       <button
+                        :disabled="score.status==2"
                         class="dropdown-item"
                         @click="handleStream(score.code)"
                       >
@@ -80,6 +82,7 @@
                     </li>
                     <li>
                       <button
+                       :disabled="score.status==2"
                         class="dropdown-item"
                         @click="handlePointsControl(score.code)"
                       >
@@ -187,7 +190,6 @@
             <div class="text-center">
                 <div class="spinner-border text-center text-light" style="width: 4rem; height: 4rem;" role="status"></div>
                 <div class="mt-3"><span class="text-center"> Processando, por favor aguarde ...</span></div>
-                
             </div>
         </div>
       </div>
@@ -252,6 +254,7 @@ const router = useRouter();
 
 // Novo usuário ou usuário a ser editado
 const newScore = reactive({
+  id:'',
   code: '',
   name: '',
   description: '',
@@ -438,7 +441,9 @@ const listScore= async()=> {
 // Adicionar um novo usuário
 const addScore= async()=> {
   isLoadVisible.value = true
-  newScore.code=generateRandomNumber()
+  const id =generateRandomNumber()
+  newScore.id=id
+  newScore.code=id
   const result = await scoreStoreDefault.addScore(newScore);
       if (result.code == 1) {
         setTimeout(() => {

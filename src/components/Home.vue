@@ -207,6 +207,11 @@
                         <button class="btn btn-warning text-light" @click="startStreaming">
                           <font-awesome-icon :icon="['fas', 'video']" /> Stream
                         </button>
+<!--                         <button class="btn btn-info text-light" @click="updateScore">
+                          <span v-if="isLoadVisible==false">Finalizar jogo</span>
+                          <span v-if="isLoadVisible" class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                          <span v-if="isLoadVisible" role="status">Loading...</span>
+                        </button> -->
                     </div>
                     <hr class="border border-white border-1 opacity-50">
                     <div class="col-12 text-white ">
@@ -273,21 +278,47 @@
 
       </div>
 
+      <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div
+            id="liveToast"
+            class="toast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            ref="toast"
+        >
+            <div class="toast-header text-white bg-success">
+            <font-awesome-icon class="text-white rounded me-2" :icon="['fas', 'trophy']" />
+            <strong class="me-auto text-white">Aviso</strong>
+            <small class="fw-bold">{{returnsMonth(new Date())}}</small>
+            <button
+                type="button"
+                class="btn-close btn-white text-white"
+                data-bs-dismiss="toast"
+                aria-label="Close"
+            ></button>
+            </div>
+            <div class="toast-body">{{ message }}</div>
+        </div>
+      </div>
+
     </div>
   </template>
   
-  <script setup>
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-  import { storeToRefs } from "pinia";
-  import { ref, computed,onMounted,watch } from 'vue';
-  import { useRouter, useRoute } from 'vue-router';
-  import { io } from 'socket.io-client';
-  import useContentDefault from "@/stores/ContentStore"
-  const contentStoreDefault = useContentDefault();
+<script setup>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import * as bootstrap from "bootstrap";
+import { storeToRefs } from "pinia";
+import { ref, computed,onMounted,watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { io } from 'socket.io-client';
+import useContentDefault from "@/stores/ContentStore"
+const contentStoreDefault = useContentDefault();
+import useScoreDefault from "@/stores/ScoreStore"
+const scoreStoreDefault = useScoreDefault();
 
 
 // Conexão com o servidor WebSocket em outro projeto
-
 
 const route = useRoute();
 const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007',{query: { code:route.query.code || '' },transports: ['websocket','polling'],reconnection: true,reconnectionAttempts: 5,reconnectionDelay: 1000}); // URL do servidor backend
@@ -344,6 +375,9 @@ let interval = null;
 
 let lastSentData = null
 let debounceTimeout = null;
+const toast = ref(null);
+const isLoadVisible = ref(false);
+const message =ref('')
 
   // Calcula se o jogo acabou
 /* const isGameOver = computed(() => checkGameOver()); */
@@ -931,9 +965,71 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,playe
   emitUpdate(data);
   //socket.emit('updateGame', data); // Envia as atualizações em tempo real
 });
+
+watch(
+  () => gameOver.value,
+  (newVal) => {
+    if (newVal === true) {
+      updateScore();
+    }
+  }
+);
+
+const  returnsMonth = (created)=>{
+  if (created)
+  return new Date(created).toLocaleDateString('pt-PT', { year: 'numeric', month: 'numeric', day: 'numeric'})
+  else return "------";
+}
+
+const showToast = () => {
+  if (toast.value) {
+    const bootstrapToast = new bootstrap.Toast(toast.value);
+    bootstrapToast.show();
+  }
+};
+const listOneScore = async ()=> {
+  isLoadVisible.value = true
+  const result = await scoreStoreDefault.listOneScore(route.query.code);
+      if (result.code == 1) {
+        setTimeout(() => {
+          message.value='Jogo Finalizado! 🎾'
+          isLoadVisible.value = false
+          showToast()
+        }, 1000);
+      } else if (result.code == 4 || result.code == 5) {
+        isLoadVisible.value = false
+        message.value='Ocorreu um erro, ao finalizar o jogo'
+        showToast()
+      }else{
+        isLoadVisible.value = false
+        message.value='Ocorreu um erro, ao finalizar o jogo'
+        showToast()
+      }
+}
+
+const updateScore = async ()=> {
+  isLoadVisible.value = true
+  const result = await scoreStoreDefault.updateScore(scoreStoreDefault._detailsEvents?.[0]);
+      if (result.code == 1) {
+        setTimeout(() => {
+          message.value='Jogo Finalizado! 🎾'
+          isLoadVisible.value = false
+          showToast()
+        }, 1000);
+      } else if (result.code == 4 || result.code == 5) {
+        isLoadVisible.value = false
+        message.value='Ocorreu um erro, ao finalizar o jogo'
+        showToast()
+      }else{
+        isLoadVisible.value = false
+        message.value='Ocorreu um erro, ao finalizar o jogo'
+        showToast()
+      }
+}
    // Restaura o timer ao recarregar a página
   onMounted(() => {
     //connectSocket()
+    listOneScore()
     socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
 /*     socket.on('currentTimer', (data) => {

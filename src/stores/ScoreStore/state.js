@@ -5,5 +5,5 @@ export default () => ({
   _totalPage: 10,
   _totalItems: 0,
   _scoreEdit:null,
-  _detailsscores:[]
+  _detailsscores:null
 });

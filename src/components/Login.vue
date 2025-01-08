@@ -147,15 +147,15 @@
   import useAuthStore from "@/stores/auth/index"
   const authStore = useAuthStore();
   
-  // Instância do Router
-const router = useRouter();
+    // Instância do Router
+  const router = useRouter();
 
-const message =ref('')
-  // Variáveis de estado
-const credentials = ref({
-  email:"",
-  password: null,
-})
+  const message =ref('')
+    // Variáveis de estado
+  const credentials = ref({
+    email:"",
+    password: null,
+  })
 
 const isLoadVisible=ref(false)
 const showPassword = ref(false);
