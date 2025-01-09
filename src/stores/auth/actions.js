@@ -2,7 +2,7 @@
 import useAuthStore from "@/stores/auth";
 import { $api } from "@/service/api";
 import { storeToRefs } from "pinia";
-
+import { io } from 'socket.io-client';
 const USER_SESSION = "DO_USER_SESSION";
 const USER_REMEMBER_ME = "DO_USER_REMEMBER_ME";
 const EMPTY_AVATAR = "/assets/img/gen_user.png";
@@ -96,6 +96,12 @@ export default {
               } else {
                 resolve({ code: 6, message: "Necessario Alterar a Senha!", data });
               } */
+              const token = data.data&&data.data.token 
+              // Envia o token para o servidor WebSocket
+                  const socket = io(import.meta.env.VITE_WEBSOCKT_BASE_URL || 'http://localhost:3007', {
+                  auth: { token }
+              });
+              socket.emit('sendToken', token);
               this.setContext(data.data);
               resolve({ code: 1, message: "Acesso Permitido!!" });
             } else if(data.status == 0 || data.status == '0'){

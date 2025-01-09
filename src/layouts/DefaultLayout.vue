@@ -91,7 +91,7 @@
 
   <h1 class="visually-hidden">Sidebars examples</h1>
 
-  <div class="d-flex flex-column flex-shrink-1 p-3 text-bg-dark " style="width: 320px;height: 100vh">
+  <div class="d-flex flex-column flex-shrink-1 p-3 text-bg-dark " style="width: 280px;height: 100vh">
     <RouterLink to="/dashboard" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <img
             src="@/assets/provision-logo.png"

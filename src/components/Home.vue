@@ -378,6 +378,7 @@ let debounceTimeout = null;
 const toast = ref(null);
 const isLoadVisible = ref(false);
 const message =ref('')
+const storedToken =ref(null)
 
   // Calcula se o jogo acabou
 /* const isGameOver = computed(() => checkGameOver()); */
@@ -650,6 +651,7 @@ function resetGame() {
   if (currentSet.value === 1) {
     setPlayer1.value.set2 = 0;
     setPlayer2.value.set2 = 0;
+    console.log("TTTTTTTTTTTT")
   } else if (currentSet.value === 2) {
     if (player1Sets.value === 2 || player2Sets.value === 2) {
       setPlayer1.value.set3 = null;
@@ -766,12 +768,12 @@ const increment = () => gameParts .value++;
   const emitUpdate=(data)=> {
   if (JSON.stringify(lastSentData) !== JSON.stringify(data)) {
     lastSentData = data;
-    console.log("DATAAAA",lastSentData)
     //socket.emit('updateGame', data);
     clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(() => {
+      console.log("updateGame",data)
         socket.emit("updateGame", data);
-      }, 300);
+      }, 400);
     }
   }
 
@@ -795,7 +797,7 @@ const increment = () => gameParts .value++;
       timer: timer.value,
     };
    // Emite os dados via WebSocket
-   emitUpdate(data);
+   //emitUpdate(data);
 
    const code = route.query.code || '';
    const url = `/broadcast?code=${code}`;
@@ -823,9 +825,9 @@ const increment = () => gameParts .value++;
     }
 });
 
+const retrievedData =()=>{
  socket.on('gameUpdated', (data) => {
   if (data.code === route.query.code && JSON.stringify(lastSentData) !== JSON.stringify(data)) {
-    console.log("Dados Actualização:", data);
     deuceRule.value=data.deuceRule || ''
     currentSet.value=data.currentSet || 1
     sponsor.value=data.sponsor || ''
@@ -847,8 +849,11 @@ const increment = () => gameParts .value++;
 
     scores.value.player1=data.scores.player1
     scores.value.player2=data.scores.player2
+
+    console.log("gameUpdated",data)
   }
 });
+}
 
 // Função para inicializar a conexão WebSocket
 const connectSocket = () => {
@@ -897,6 +902,17 @@ const reconnectClient = () => {
         alert('Você já está conectado.');
     }
 };
+
+// Evento que retorna o token
+socket.on('tokenAssigned', (data) => {
+    if (data.token) {
+        storedToken.value = data.token
+        listOneScore(data.token)
+    } else {
+        console.warn('Token não recebido ou inválido.');
+    }
+});
+
 
 // Evento que garante que todos os clientes com o mesmo código se reconectem
 socket.on('forceConnected', ({ code }) => {
@@ -961,19 +977,12 @@ watch([player1, player2, sponsor,hideBoard,gameOver,deuceRule,player1Score,playe
     hideBoard:hideBoard.value,
     gameOver:gameOver.value,
     deuceRule:deuceRule.value,
+    
   };
   emitUpdate(data);
   //socket.emit('updateGame', data); // Envia as atualizações em tempo real
 });
 
-watch(
-  () => gameOver.value,
-  (newVal) => {
-    if (newVal === true) {
-      updateScore();
-    }
-  }
-);
 
 const  returnsMonth = (created)=>{
   if (created)
@@ -987,14 +996,12 @@ const showToast = () => {
     bootstrapToast.show();
   }
 };
-const listOneScore = async ()=> {
+const listOneScore = async (storedToken)=> {
   isLoadVisible.value = true
-  const result = await scoreStoreDefault.listOneScore(route.query.code);
+  const result = await scoreStoreDefault.listOneScore({id:route.query.code,storedToken:storedToken});
       if (result.code == 1) {
         setTimeout(() => {
-          message.value='Jogo Finalizado! 🎾'
           isLoadVisible.value = false
-          showToast()
         }, 1000);
       } else if (result.code == 4 || result.code == 5) {
         isLoadVisible.value = false
@@ -1009,7 +1016,16 @@ const listOneScore = async ()=> {
 
 const updateScore = async ()=> {
   isLoadVisible.value = true
-  const result = await scoreStoreDefault.updateScore(scoreStoreDefault._detailsEvents?.[0]);
+  const data={
+    id:scoreStoreDefault._detailsEvents?.[0]?.id,
+    code: scoreStoreDefault._detailsEvents?.[0]?.code,
+    name: scoreStoreDefault._detailsEvents?.[0]?.name,
+    description: scoreStoreDefault._detailsEvents?.[0]?.description,
+    status:2,
+    sport_type: '',
+    storedToken
+  }
+  const result = await scoreStoreDefault.updateScore(data);
       if (result.code == 1) {
         setTimeout(() => {
           message.value='Jogo Finalizado! 🎾'
@@ -1026,11 +1042,22 @@ const updateScore = async ()=> {
         showToast()
       }
 }
+
+watch(
+  () => gameOver.value,
+  (newVal) => {
+    if (newVal === true) {
+      updateScore();
+    }
+  },{ immediate: true } 
+);
    // Restaura o timer ao recarregar a página
   onMounted(() => {
     //connectSocket()
-    listOneScore()
-    socket.emit('getGame', { code: route.query.code || '' });
+    //listOneScore()
+    retrievedData()
+    socket.emit('requestToken');
+    //socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
 /*     socket.on('currentTimer', (data) => {
       if (data.code === route.query.code) {

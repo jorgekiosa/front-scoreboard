@@ -1,5 +1,6 @@
 <template>
     <div class="scoreboard p-3 rounded" v-if="hideBoard">
+      <pre>{{ returnData }}</pre>
       <div class="d-flex justify-content-between align-items-center mb-1">
         <!-- Container com duas divs separadas -->
         <div class="d-flex">
@@ -107,6 +108,9 @@
   return `${minutes}:${seconds}`;
  });
 
+ const returnData = computed(() => {
+   return data.value
+  });
   
 const updateLocalState=(updatedData)=>{
   if (!updatedData || updatedData.code !== route.query.code) return;
@@ -172,7 +176,7 @@ function removeSocketListeners() {
 // Solicita o timer ao carregar a página
 onMounted(() => {
   setupSocketListeners();
-  socket.emit('getGame', { code: route.query.code || '' });
+  //socket.emit('getGame', { code: route.query.code || '' });
   socket.emit('getTimer', { code: route.query.code || '' });
 });
 

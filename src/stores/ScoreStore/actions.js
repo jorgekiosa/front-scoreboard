@@ -72,19 +72,19 @@ export default {
   },
 
   async listOneScore(payload) {
-    const token = getAuthToken(); 
+    const token = getAuthToken();
     return new Promise(async (resolve, reject) => {
       const paramsUrl = propsAsStringParamsUrl(cleanObjectNull(payload))
       try {
         $api
-          .get(`/scoreboard/${payload}`,{
+          .get(`/scoreboard/${payload.id}`,{
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Headers": "Content-Type, Authorization",
               "Access-Control-Allow-Methods": "*",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token?payload?.storedToken:token}`,
             },
           })
           .then(({ data, status }) => {
@@ -163,7 +163,7 @@ export default {
   },
 
   async updateScore(payload) {
-    const token = getAuthToken(); 
+    const token = getAuthToken();
     return new Promise(async (resolve, reject) => {
       try {
         $api
@@ -174,7 +174,7 @@ export default {
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Headers": "Content-Type, Authorization",
               "Access-Control-Allow-Methods": "*",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token==null?payload?.storedToken?.value:token}`,
             },
           })
           .then(({ data, status }) => {
