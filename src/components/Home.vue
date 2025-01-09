@@ -653,13 +653,13 @@ function resetGame() {
     setPlayer2.value.set2 = 0;
     console.log("TTTTTTTTTTTT")
   } else if (currentSet.value === 2) {
-    /* if (player1Sets.value === 2 || player2Sets.value === 2) {
+    if (player1Sets.value === 2 || player2Sets.value === 2) {
       setPlayer1.value.set3 = null;
       setPlayer2.value.set3 = null;
-    } else { */
+    } else {
       setPlayer1.value.set3 = 0;
       setPlayer2.value.set3 = 0;
-    
+    }
   }
 }
 
@@ -769,8 +769,11 @@ const increment = () => gameParts .value++;
   if (JSON.stringify(lastSentData) !== JSON.stringify(data)) {
     lastSentData = data;
     //socket.emit('updateGame', data);
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
       console.log("updateGame",data)
-    socket.emit("updateGame", data);
+        socket.emit("updateGame", data);
+      }, 300);
     }
   }
 
