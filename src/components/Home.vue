@@ -1057,7 +1057,7 @@ watch(
     //listOneScore()
     //retrievedData()
     socket.emit('requestToken');
-    //socket.emit('getGame', { code: route.query.code || '' });
+    socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
 /*     socket.on('currentTimer', (data) => {
       if (data.code === route.query.code) {
