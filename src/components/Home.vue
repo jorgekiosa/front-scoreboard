@@ -825,8 +825,8 @@ const increment = () => gameParts .value++;
     }
 });
 
-const retrievedData =()=>{
- socket.on('gameUpdated', (data) => {
+/* const retrievedData =()=>{
+ */ socket.on('gameUpdated', (data) => {
   if (data.code === route.query.code && JSON.stringify(lastSentData) !== JSON.stringify(data)) {
     deuceRule.value=data.deuceRule || 'goldenPoint'
     currentSet.value=data.currentSet || 1
@@ -853,7 +853,7 @@ const retrievedData =()=>{
     console.log("gameUpdated",data)
   }
 });
-}
+/* } */
 
 // Função para inicializar a conexão WebSocket
 const connectSocket = () => {
@@ -1055,7 +1055,7 @@ watch(
   onMounted(() => {
     //connectSocket()
     //listOneScore()
-    retrievedData()
+    //retrievedData()
     socket.emit('requestToken');
     //socket.emit('getGame', { code: route.query.code || '' });
     socket.emit('getTimer', { code: route.query.code || '' });
