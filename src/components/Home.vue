@@ -366,7 +366,7 @@ const scores = ref({
 // Tipo de set (normal ou pontos corridos)
 const setType = ref('normal'); // "normal" é o tipo de set padrão
 // Regra do Deuce
-const deuceRule = ref(''); // Pode ser 'advantage' ou 'goldenPoint'
+const deuceRule = ref('goldenPoint'); // Pode ser 'advantage' ou 'goldenPoint'
   
 // Timer
 const timer = ref(0); // Timer em segundos
@@ -828,7 +828,7 @@ const increment = () => gameParts .value++;
 const retrievedData =()=>{
  socket.on('gameUpdated', (data) => {
   if (data.code === route.query.code && JSON.stringify(lastSentData) !== JSON.stringify(data)) {
-    deuceRule.value=data.deuceRule || ''
+    deuceRule.value=data.deuceRule || 'goldenPoint'
     currentSet.value=data.currentSet || 1
     sponsor.value=data.sponsor || ''
     hideBoard.value=data.hideBoard || true
@@ -925,7 +925,7 @@ socket.on('forceConnected', ({ code }) => {
       socket.emit('resetTimer', { code: route.query.code || '' });
   };
   const resetAll = () => {
-    deuceRule.value=''
+    deuceRule.value='goldenPoint'
     currentSet.value = 1;
     sponsor.value= ''
     isTieBreak.value= false
