@@ -1,6 +1,5 @@
 <template>
     <div class="scoreboard p-3 rounded" v-if="hideBoard">
-      <pre>{{ returnData }}</pre>
       <div class="d-flex justify-content-between align-items-center mb-1">
         <!-- Container com duas divs separadas -->
         <div class="d-flex">
