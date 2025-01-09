@@ -773,7 +773,7 @@ const increment = () => gameParts .value++;
     debounceTimeout = setTimeout(() => {
       console.log("updateGame",data)
         socket.emit("updateGame", data);
-      }, 400);
+      }, 300);
     }
   }
 
