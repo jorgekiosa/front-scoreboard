@@ -14,7 +14,7 @@
       <div class="teams border-start border-placar border-5">
         <div class="team p-0 text-dark">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="team d-flex border-top w-100" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);">
+            <div class="border-top w-100 bg-white" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);padding: 0.60rem;">
               <span class="team-name fs-5 fw-bold" v-for="(part, index) in formatName(team1.name)" :key="index">
                 {{ part }}
                 <img
@@ -43,7 +43,7 @@
         <hr class="m-0 border border-ligth border-1 opacity-50">
         <div class="team p-0 text-dark">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="team d-flex border-bottom w-100" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);">
+            <div class="team border-bottom w-100 bg-white" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);padding: 0.60rem;">
               <span class="team-name fs-5 fw-bold" v-for="(part, index) in formatName(team2.name)" :key="index">
                 {{ part }}
                 <img
