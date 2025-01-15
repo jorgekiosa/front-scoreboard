@@ -27,14 +27,14 @@
             </div>
             <div class="text-white d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
-                <span v-if="team1.set1!==null" class="bg-set px-4 py-2 set-score fs-4 fw-bolder me-1">{{team1.set1}}</span>
-                <span v-if="team1.set2!==null" class="bg-set px-4 py-2 set-score fs-4 fw-bolder me-1">{{team1.set2}}</span>
-                <span v-if="team1.set3!==null" class="bg-set px-4 py-2 set-score fs-4 fw-bolder me-1">{{team1.set3}}</span>
+                <span v-if="team1.set1!==null" class="bg-set px-3 py-2 set-score fs-4 fw-bolder me-1">{{team1.set1}}</span>
+                <span v-if="team1.set2!==null" class="bg-set px-3 py-2 set-score fs-4 fw-bolder me-1">{{team1.set2}}</span>
+                <span v-if="team1.set3!==null" class="bg-set px-3 py-2 set-score fs-4 fw-bolder me-1">{{team1.set3}}</span>
               </div>
               <div class="d-flex" v-if="data?.gameOver==false" :class="
                   team1.totalScore=='VT'?'total-score bg-points fs-4 fw-bolder text-whie px-4 py-2':
                   team1.totalScore==40&&team2.totalScore==40&&data?.deuceRule==='goldenPoint'?'total-score fs-4 fw-bolder text-white bg-gold-point border-gold-point px-4 py-2':
-                  'total-score bg-points fs-4 fw-bolder text-white px-4 py-2'">
+                  'total-score bg-points fs-4 fw-bolder text-white px-3 py-2'">
                   {{team1.totalScore}}
               </div>
             </div>
@@ -56,14 +56,14 @@
             </div>
             <div class="text-white d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
-                <span v-if="team2.set1!==null" class="bg-set px-4 py-2 set-score fs-4 fw-bolder me-1">{{team2.set1}}</span>
-                <span v-if="team2.set2!==null" class="bg-set px-4 py-2 set-score fs-4 fw-bolder me-1">{{team2.set2}}</span>
-                <span v-if="team2.set3!==null" class="bg-set px-4 py-2 set-score fs-4 fw-bolder me-1">{{team2.set3}}</span>
+                <span v-if="team2.set1!==null" class="bg-set px-3 py-2 set-score fs-4 fw-bolder me-1">{{team2.set1}}</span>
+                <span v-if="team2.set2!==null" class="bg-set px-3 py-2 set-score fs-4 fw-bolder me-1">{{team2.set2}}</span>
+                <span v-if="team2.set3!==null" class="bg-set px-3 py-2 set-score fs-4 fw-bolder me-1">{{team2.set3}}</span>
               </div>
               <div class="d-flex" v-if="data?.gameOver==false" :class="
                   team2.totalScore=='VT'?'total-score bg-points fs-4 fw-bolder text-whie px-4 py-2':
                   team1.totalScore==40&&team2.totalScore==40&&data?.deuceRule==='goldenPoint'?'total-score fs-4 fw-bolder text-white bg-gold-point border-gold-point px-4 py-2':
-                  'total-score bg-points fs-4 fw-bolder text-white px-4 py-2'">
+                  'total-score bg-points fs-4 fw-bolder text-white px-3 py-2'">
                   {{team2.totalScore}}
               </div>
             </div>
@@ -261,7 +261,8 @@ onUnmounted(() => {
   vertical-align: middle;
 }
 .scoreboard {
-  max-width: 350px;
+  /* max-width: 350px; */
+  max-width: 390px;
 }
 
 .team-name {
