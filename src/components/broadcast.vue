@@ -14,18 +14,16 @@
       <div class="teams border-start border-placar border-5">
         <div class="team p-0 text-dark">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="border-top w-100 bg-white team-container" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);padding: 0.60rem;">
-              <div class="team-name-wrapper">
-                <span class="team-name fs-5 fw-bold" v-for="(part, index) in formatName(team1.name)" :key="index">
-                  {{ part }}
-                  <img
-                    v-if="index !== formatName(team1.name).length - 1"
-                    src="@/assets/seta.png"
-                    alt="Arrow Icon"
-                    class="arrow-icon"
-                  />
-                </span>
-              </div>
+            <div class="border-top w-100 bg-white" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);padding: 0.60rem;">
+              <span class="team-name fs-5 fw-bold" v-for="(part, index) in formatName(team1.name)" :key="index">
+                {{ part }}
+                <img
+                  v-if="index !== formatName(team1.name).length - 1"
+                  src="@/assets/seta.png"
+                  alt="Arrow Icon"
+                  class="arrow-icon"
+                />
+              </span>
             </div>
             <div class="text-white d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
@@ -45,8 +43,7 @@
         <hr class="m-0 border border-ligth border-1 opacity-50">
         <div class="team p-0 text-dark">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="team border-bottom w-100 bg-white team-container" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);padding: 0.60rem;">
-              <div class="team-name-wrapper">
+            <div class="team border-bottom w-100 bg-white" style="clip-path: polygon(0 0, 95% 0, 100% 100%, 0 100%);padding: 0.60rem;">
               <span class="team-name fs-5 fw-bold" v-for="(part, index) in formatName(team2.name)" :key="index">
                 {{ part }}
                 <img
@@ -56,7 +53,6 @@
                   class="arrow-icon"
                 />
               </span>
-              </div>
             </div>
             <div class="text-white d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
@@ -174,7 +170,6 @@ const setupSocketListeners=()=> {
   isListening = true;
 
   socket.on('gameUpdated', (updatedData) => {
-    console.log('Dados recebidos:', updatedData);
     updateLocalState(updatedData);
   });
 
@@ -309,35 +304,6 @@ onUnmounted(() => {
 
 .timer, .game-name {
   display: inline-block; /* Para os elementos ficarem na mesma linha */
-}
-
-.team-container {
-  overflow: hidden;
-  width: 100%;
-}
-
-.team-name-wrapper {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.team-name {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1.16rem !important;
-}
-
-.arrow-icon {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  margin: 0 5px;
 }
   </style>
   
