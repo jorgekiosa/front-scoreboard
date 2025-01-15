@@ -654,6 +654,7 @@ function resetGame() {
     console.log("TTTTTTTTTTTT")
   } else if (currentSet.value === 2) {
     if (player1Sets.value === 2 || player2Sets.value === 2) {
+      console.log("GANHOU DOIS SETS CONSECUTIVOS")
       setPlayer1.value.set3 = null;
       setPlayer2.value.set3 = null;
     } else {
@@ -825,8 +826,8 @@ const increment = () => gameParts .value++;
     }
 });
 
-/* const retrievedData =()=>{
- */ socket.on('gameUpdated', (data) => {
+const retrievedData =()=>{
+ socket.on('gameUpdated', (data) => {
   if (data.code === route.query.code && JSON.stringify(lastSentData) !== JSON.stringify(data)) {
     deuceRule.value=data.deuceRule || 'goldenPoint'
     currentSet.value=data.currentSet || 1
@@ -853,7 +854,7 @@ const increment = () => gameParts .value++;
     console.log("gameUpdated",data)
   }
 });
-/* } */
+} 
 
 // Função para inicializar a conexão WebSocket
 const connectSocket = () => {
